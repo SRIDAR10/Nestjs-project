@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post} from '@nestjs/common';
 import {MoviesService} from "./movies.service"
 import { Logger } from '@nestjs/common';
 import { MovieDto } from './movies.dto';

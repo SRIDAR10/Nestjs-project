@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -11,8 +11,12 @@ export class MoviesService {
     constructor(@InjectModel("movies") private readonly moviesModel :Model<IMovies>){}
 
     public async getAllMovies() {
-        const movies = this.moviesModel.find().exec();
+        try{
+        const movies = this.moviesModel.find().limit(20).exec();
         return movies;
+        }catch(e){
+            Logger.error(e);
+        }
     }
 
     public async addMovies(movieDto : Partial<MovieDto>):Promise<MovieDto>{
