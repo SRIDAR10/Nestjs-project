@@ -9,6 +9,22 @@ export class SlackController {
     @Body('payload') payload: string,
     @Res() res: Response,
   ): Promise<any> {
+    try {
+      const interactionPayload = JSON.parse(payload);
+      Logger.log(interactionPayload);
+      const channelId = interactionPayload.channel.id;
+      const responseUrl = interactionPayload.response_url;
+      const triggerId = interactionPayload.trigger_id;
+      Logger.log('triggerId ', triggerId);
+      Logger.log(`Interaction in channel ${channelId}`);
+      this.openModal(triggerId);
+      res.status(200).send('OK');
+    } catch (error) {
+      Logger.error('Error handling interaction:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  }
+  openModal(triggerId) {
     const modal = {
       type: 'modal',
       callback_id: 'your-callback-id',
@@ -52,41 +68,28 @@ export class SlackController {
         },
       ],
     };
-    try {
-      const interactionPayload = JSON.parse(payload);
-      Logger.log(interactionPayload);
-      const channelId = interactionPayload.channel.id;
-      const responseUrl = interactionPayload.response_url;
-      const triggerId = interactionPayload.trigger_id;
-
-      axios
-        .post(
-          'https://slack.com/api/views.open',
-          {
-            trigger_id: triggerId,
-            view: modal,
+    axios
+      .post(
+        'https://slack.com/api/views.open',
+        {
+          trigger_id: triggerId,
+          view: modal,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer xoxb-6054524842103-6081742571169-TM121pT2Cfg3ewxUHwj5KRPc`,
           },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer xoxb-6054524842103-6081742571169-TM121pT2Cfg3ewxUHwj5KRPc`,
-            },
-          },
-        )
-        .then((response) => {
-          console.log('Modal opened successfully:', response.data);
-        })
-        .catch((error) => {
-          console.error(
-            'Error opening modal:',
-            error.response ? error.response.data : error.message,
-          );
-        });
-      Logger.log(`Interaction in channel ${channelId}`);
-      res.status(200).send('OK');
-    } catch (error) {
-      Logger.error('Error handling interaction:', error);
-      res.status(500).send('Internal Server Error');
-    }
+        },
+      )
+      .then((response) => {
+        console.log('Modal opened successfully:', response.data);
+      })
+      .catch((error) => {
+        console.error(
+          'Error opening modal:',
+          error.response ? error.response.data : error.message,
+        );
+      });
   }
 }
