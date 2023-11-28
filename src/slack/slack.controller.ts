@@ -11,7 +11,7 @@ export class SlackController {
   ): Promise<any> {
     try {
       const interactionPayload = JSON.parse(payload);
-      Logger.log(interactionPayload);
+    //   Logger.log(interactionPayload);
       const channelId = interactionPayload.channel.id;
       const responseUrl = interactionPayload.response_url;
       const triggerId = interactionPayload.trigger_id;
@@ -78,7 +78,7 @@ export class SlackController {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer xoxb-6054524842103-6081742571169-TM121pT2Cfg3ewxUHwj5KRPc`,
+            Authorization: `Bearer xoxb-6087353163408-6057864588662-weurmpd5HirwbMbO9opJlW8j`,
           },
         },
       )
