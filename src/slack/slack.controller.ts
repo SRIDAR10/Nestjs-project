@@ -5,7 +5,7 @@ import axios from 'axios';
 @Controller('slack')
 export class SlackController {
   private readonly slackApiUrl = 'https://slack.com/api';
-  private readonly slackApiToken = "xoxb-6087353163408-6057864588662-2XWP1EFkXPhXZhNcNFjGzMWQ";
+  private readonly slackApiToken = "xoxb-6087353163408-6057864588662-7FYg57OhIy5sVxm0jC7SKKaT";
 
   @Post('/interactive')
   async handleSlackInteraction(
@@ -145,11 +145,16 @@ export class SlackController {
       ],
     };
 
-    await axios.post(`${this.slackApiUrl}/chat.postMessage`, messagePayload, {
-      headers: {
-        Authorization: `Bearer ${this.slackApiToken}`,
-        'Content-Type': 'application/json',
-      },
-    });
+    try {
+      const response = await axios.post(`${this.slackApiUrl}/chat.postMessage`, messagePayload, {
+        headers: {
+          Authorization: `Bearer ${this.slackApiToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log('Slack API Response:', response.data);
+    } catch (error) {
+      console.error('Error posting message to Slack:', error.message);
+    }
   }
 }
