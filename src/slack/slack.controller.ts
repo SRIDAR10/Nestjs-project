@@ -114,7 +114,7 @@ export class SlackController {
     }
   }
 
-  @Post('post-message-with-button')
+  @Post('/post-message-with-button')
   async postMessageWithButton(@Body() body: any): Promise<string> {
     const userId = 'U061WAK3RMY';
 
