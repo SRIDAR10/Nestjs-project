@@ -5,7 +5,7 @@ import axios from 'axios';
 @Controller('slack')
 export class SlackController {
   private readonly slackApiUrl = 'https://slack.com/api';
-  private readonly slackApiToken = "xoxb-6087353163408-6057864588662-7hcKzUF2eDUMXSOmGvReU5St";
+  private readonly slackApiToken = "xoxb-6087353163408-6057864588662-FK5SZgv7JL5IZNBVkjMOd1e2";
 
   @Post('/interactive')
   async handleSlackInteraction(
