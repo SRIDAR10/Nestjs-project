@@ -1,11 +1,19 @@
 import { Controller, Post, Req, Res, Logger, Body } from '@nestjs/common';
 import { Response } from 'express';
 import axios from 'axios';
+import { SlackService } from './slack.service';
 
 @Controller('slack')
 export class SlackController {
+  private slackApiToken :string
+  // constructor(private slackService : SlackService){
+  //   const users = this.slackService.getAllUsers()
+  //   Logger.log("res", users);
+  // }
+
   private readonly slackApiUrl = 'https://slack.com/api';
-  private readonly slackApiToken = "xoxb-6087353163408-6057864588662-FK5SZgv7JL5IZNBVkjMOd1e2";
+
+
 
   @Post('/interactive')
   async handleSlackInteraction(
@@ -104,7 +112,7 @@ export class SlackController {
         },
         {
           headers: {
-            Authorization: `Bearer ${this.slackApiToken}`,
+            Authorization: `Bearer xoxb-6087353163408-6057864588662-cnrcwhRXptzYJyoBIQp2ZO89`,
             'Content-Type': 'application/json',
           },
         },
@@ -148,7 +156,7 @@ export class SlackController {
     try {
       const response = await axios.post(`${this.slackApiUrl}/chat.postMessage`, messagePayload, {
         headers: {
-          Authorization: `Bearer ${this.slackApiToken}`,
+          Authorization: `Bearer xoxb-6087353163408-6057864588662-cnrcwhRXptzYJyoBIQp2ZO89`,
           'Content-Type': 'application/json',
         },
       });
