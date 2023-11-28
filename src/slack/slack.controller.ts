@@ -78,7 +78,7 @@ export class SlackController {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer xoxb-6055729853491-6041323485799-tK8CJ5Xzf3djAB5QGwpfMPvc`,
+            Authorization: `Bearer xoxb-6087353163408-6057864588662-lQN5vu0OMxZJMdb4fGdmU00w`,
           },
         },
       )
