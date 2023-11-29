@@ -160,7 +160,7 @@ export class SlackController {
           },
         },
       );
-      console.log('Slack API Response:', response.data);
+      Logger.log(JSON.stringify(response.data));
     } catch (error) {
       console.error('Error posting message to Slack:', error.message);
     }
