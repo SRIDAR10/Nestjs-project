@@ -1,5 +1,5 @@
 import { Controller, Post, Req, Res, Logger, Body } from '@nestjs/common';
-import { Response } from 'express';
+import { Response} from 'express';
 import axios from 'axios';
 import { SlackService } from './slack.service';
 
@@ -32,6 +32,7 @@ export class SlackController {
   }
   // Helper method to open a Slack modal
   private async sendInitialModalView(triggerId: string): Promise<void> {
+    Logger.log(triggerId);
     const users = await this.slackService.getAllUsers();
     const viewPayload = {
       type: 'modal',
@@ -100,7 +101,7 @@ export class SlackController {
       },
     };
     try {
-      await axios.post(
+      const response =   await axios.post(
         `${this.slackApiUrl}/views.open`,
         {
           trigger_id: triggerId,
@@ -113,6 +114,7 @@ export class SlackController {
           },
         },
       );
+      Logger.log(response);
     } catch (e) {
       Logger.error(e);
     }

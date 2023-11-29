@@ -18,6 +18,4 @@ export class MoviesController {
         Logger.log("inside add movies");
         return this.moviesService.addMovies(movieDto);
     }
-
-
 }
