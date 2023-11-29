@@ -17,7 +17,7 @@ export class SlackController {
   ): Promise<any> {
     try {
       const interactionPayload = JSON.parse(payload);
-      //   Logger.log(interactionPayload);
+        Logger.log(interactionPayload);
       const channelId = interactionPayload.channel.id;
       const responseUrl = interactionPayload.response_url;
       const triggerId = interactionPayload.trigger_id;
