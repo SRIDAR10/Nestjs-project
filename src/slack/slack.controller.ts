@@ -74,48 +74,6 @@ export class SlackController {
           "type": "section",
           "text": {
             "type": "mrkdwn",
-            "text": "Pick an item from the dropdown list"
-          },
-          "accessory": {
-            "type": "static_select",
-            "placeholder": {
-              "type": "plain_text",
-              "text": "Select an item",
-              "emoji": true
-            },
-            "options": [
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": "*this is plain_text text*",
-                  "emoji": true
-                },
-                "value": "value-0"
-              },
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": "*this is plain_text text*",
-                  "emoji": true
-                },
-                "value": "value-1"
-              },
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": "*this is plain_text text*",
-                  "emoji": true
-                },
-                "value": "value-2"
-              }
-            ],
-            "action_id": "static_select-action"
-          }
-        },
-        {
-          "type": "section",
-          "text": {
-            "type": "mrkdwn",
             "text": "This is a section block with an overflow menu."
           },
           "accessory": {
@@ -179,7 +137,33 @@ export class SlackController {
               "type": "plain_text",
               "text": "Select an item"
             },
-            "min_query_length": 3
+            "min_query_length": 3,
+            "options": [
+              {
+                "text": {
+                  "type": "plain_text",
+                  "text": "Option A",
+                  "emoji": true
+                },
+                "value": "option_a"
+              },
+              {
+                "text": {
+                  "type": "plain_text",
+                  "text": "Option B",
+                  "emoji": true
+                },
+                "value": "option_b"
+              },
+              {
+                "text": {
+                  "type": "plain_text",
+                  "text": "Option C",
+                  "emoji": true
+                },
+                "value": "option_c"
+              }
+            ]
           }
         },
         {
@@ -196,11 +180,39 @@ export class SlackController {
               "type": "plain_text",
               "text": "Select an item"
             },
-            "min_query_length": 3
+            "min_query_length": 3,
+            "options": [
+              {
+                "text": {
+                  "type": "plain_text",
+                  "text": "Option X",
+                  "emoji": true
+                },
+                "value": "option_x"
+              },
+              {
+                "text": {
+                  "type": "plain_text",
+                  "text": "Option Y",
+                  "emoji": true
+                },
+                "value": "option_y"
+              },
+              {
+                "text": {
+                  "type": "plain_text",
+                  "text": "Option Z",
+                  "emoji": true
+                },
+                "value": "option_z"
+              }
+            ]
           }
         }
       ]
-    }
+    };
+    
+    
 
     try {
       const response = await axios.post(
