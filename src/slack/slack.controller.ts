@@ -106,7 +106,7 @@ export class SlackController {
         },
         {
           "type": "section",
-          "block_id": "external_section",
+          "block_id": "external_section_1",
           "text": {
             "type": "mrkdwn",
             "text": "External Data Source"
