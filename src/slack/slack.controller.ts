@@ -35,7 +35,7 @@ export class SlackController {
     Logger.log(triggerId);
     const users = await this.slackService.getAllUsers();
 
-   const viewPayload = {
+    const viewPayload = {
       "type": "modal",
       "title": {
         "type": "plain_text",
@@ -70,10 +70,19 @@ export class SlackController {
               {
                 "label": {
                   "type": "plain_text",
-                  "text": "Loading...",
+                  "text": "Options Group 1",
                   "emoji": true
                 },
-                "options": []  // Options will be dynamically loaded from your endpoint
+                "options": [  // Provide at least one item in the options array
+                  {
+                    "text": {
+                      "type": "plain_text",
+                      "text": "Option A",
+                      "emoji": true
+                    },
+                    "value": "option_a"
+                  }
+                ]
               }
             ],
             "action_id": "static_select-action"
@@ -135,7 +144,8 @@ export class SlackController {
           }
         }
       ]
-    };    
+    };
+    
     
     
 
