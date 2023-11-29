@@ -36,41 +36,18 @@ export class SlackController {
     const users = await this.slackService.getAllUsers();
 
     const viewPayload = {
-      type: 'modal',
-      title: {
-        type: 'plain_text',
-        text: 'My App',
-        emoji: true,
-      },
-      submit: {
-        type: 'plain_text',
-        text: 'Submit',
-        emoji: true,
-      },
-      close: {
-        type: 'plain_text',
-        text: 'Cancel',
-        emoji: true,
-      },
       blocks: [
         {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: 'New Paid Time Off request from <example.com|Fred Enriquez>\n\n<https://example.com|View request>',
-          },
-        },
-        {
-          type: 'section',
-          text: {
-            type: 'mrkdwn',
-            text: 'Test block with multi static select',
+            text: 'Pick an item from the dropdown list',
           },
           accessory: {
-            type: 'multi_static_select',
+            type: 'static_select',
             placeholder: {
               type: 'plain_text',
-              text: 'Select options',
+              text: 'Select an item',
               emoji: true,
             },
             options: [
@@ -99,7 +76,94 @@ export class SlackController {
                 value: 'value-2',
               },
             ],
-            action_id: 'multi_static_select-action',
+            action_id: 'static_select-action',
+          },
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: 'This is a section block with an overflow menu.',
+          },
+          accessory: {
+            type: 'overflow',
+            options: [
+              {
+                text: {
+                  type: 'plain_text',
+                  text: '*this is plain_text text*',
+                  emoji: true,
+                },
+                value: 'value-0',
+              },
+              {
+                text: {
+                  type: 'plain_text',
+                  text: '*this is plain_text text*',
+                  emoji: true,
+                },
+                value: 'value-1',
+              },
+              {
+                text: {
+                  type: 'plain_text',
+                  text: '*this is plain_text text*',
+                  emoji: true,
+                },
+                value: 'value-2',
+              },
+              {
+                text: {
+                  type: 'plain_text',
+                  text: '*this is plain_text text*',
+                  emoji: true,
+                },
+                value: 'value-3',
+              },
+              {
+                text: {
+                  type: 'plain_text',
+                  text: '*this is plain_text text*',
+                  emoji: true,
+                },
+                value: 'value-4',
+              },
+            ],
+            action_id: 'overflow-action',
+          },
+        },
+        {
+          type: 'section',
+          block_id: 'section678',
+          text: {
+            type: 'mrkdwn',
+            text: 'External Data Source 1',
+          },
+          accessory: {
+            action_id: 'text1234',
+            type: 'external_select',
+            placeholder: {
+              type: 'plain_text',
+              text: 'Select an item',
+            },
+            min_query_length: 3,
+          },
+        },
+        {
+          type: 'section',
+          block_id: 'section67',
+          text: {
+            type: 'mrkdwn',
+            text: 'External Data Source 2',
+          },
+          accessory: {
+            action_id: 'text2',
+            type: 'external_select',
+            placeholder: {
+              type: 'plain_text',
+              text: 'Select an item',
+            },
+            min_query_length: 3,
           },
         },
       ],
@@ -131,6 +195,16 @@ export class SlackController {
   async postMessageWithButton(@Body() body: any): Promise<string> {
     await this.sendSlackMessageWithButton();
     return 'OK';
+  }
+
+  @Post('/options-for-dropdown')
+  async optionsForDropdown(@Body() body: any): Promise<string> {
+    console.log('Received payload from Slack:', body);
+    const options = [
+      { label: 'Option 1', value: 'option_1' },
+      { label: 'Option 2', value: 'option_2' },
+    ];
+    return JSON.stringify({ options });
   }
 
   private async sendSlackMessageWithButton(): Promise<void> {
