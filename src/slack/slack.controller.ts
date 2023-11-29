@@ -1,5 +1,5 @@
 import { Controller, Post, Req, Res, Logger, Body } from '@nestjs/common';
-import { Response} from 'express';
+import { Response } from 'express';
 import axios from 'axios';
 import { SlackService } from './slack.service';
 
@@ -17,7 +17,7 @@ export class SlackController {
   ): Promise<any> {
     try {
       const interactionPayload = JSON.parse(payload);
-        Logger.log(interactionPayload);
+      Logger.log(interactionPayload);
       const channelId = interactionPayload.channel.id;
       const responseUrl = interactionPayload.response_url;
       const triggerId = interactionPayload.trigger_id;
@@ -30,82 +30,87 @@ export class SlackController {
       res.status(500).send('Internal Server Error');
     }
   }
-  // Helper method to open a Slack modal
+
   private async sendInitialModalView(triggerId: string): Promise<void> {
     Logger.log(triggerId);
     const users = await this.slackService.getAllUsers();
+
     const viewPayload = {
       type: 'modal',
-      callback_id: 'pg-update',
       title: {
         type: 'plain_text',
-        text: 'Your Modal Title',
+        text: 'My App',
+        emoji: true,
+      },
+      submit: {
+        type: 'plain_text',
+        text: 'Submit',
+        emoji: true,
+      },
+      close: {
+        type: 'plain_text',
+        text: 'Cancel',
+        emoji: true,
       },
       blocks: [
         {
           type: 'section',
-          block_id: 'section-1',
           text: {
             type: 'mrkdwn',
-            text: 'Choose an option from the dropdown:',
-          },
-          accessory: {
-            type: 'static_select',
-            action_id: 'select-1',
-            placeholder: {
-              type: 'plain_text',
-              text: 'Select an option',
-            },
-            options: [
-              {
-                text: {
-                  type: 'plain_text',
-                  text: 'Option 1',
-                },
-                value: 'option1',
-              },
-              {
-                text: {
-                  type: 'plain_text',
-                  text: 'Option 2',
-                },
-                value: 'option2',
-              },
-              // Add more options as needed
-            ],
+            text: 'New Paid Time Off request from <example.com|Fred Enriquez>\n\n<https://example.com|View request>',
           },
         },
         {
           type: 'section',
-          block_id: 'section-2',
           text: {
             type: 'mrkdwn',
-            text: 'Choose an option from the second dropdown:',
+            text: 'Test block with multi static select',
           },
           accessory: {
-            type: 'static_select',
-            action_id: 'select-2',
+            type: 'multi_static_select',
             placeholder: {
               type: 'plain_text',
-              text: 'Select an option',
+              text: 'Select options',
+              emoji: true,
             },
             options: [
-              // Initial options will be empty and will be dynamically updated
+              {
+                text: {
+                  type: 'plain_text',
+                  text: '*this is plain_text text*',
+                  emoji: true,
+                },
+                value: 'value-0',
+              },
+              {
+                text: {
+                  type: 'plain_text',
+                  text: '*this is plain_text text*',
+                  emoji: true,
+                },
+                value: 'value-1',
+              },
+              {
+                text: {
+                  type: 'plain_text',
+                  text: '*this is plain_text text*',
+                  emoji: true,
+                },
+                value: 'value-2',
+              },
             ],
+            action_id: 'multi_static_select-action',
           },
         },
       ],
-      submit: {
-        type: 'plain_text',
-        text: 'Submit',
-      },
     };
+
     try {
       const response = await axios.post(
         `${this.slackApiUrl}/views.open`,
         {
           trigger_id: triggerId,
-          view: JSON.stringify(viewPayload),
+          view: viewPayload,
         },
         {
           headers: {
@@ -114,10 +119,11 @@ export class SlackController {
           },
         },
       );
-      
-      Logger.log(JSON.stringify(response.data));
+
+      // Log the response from views.open
+      Logger.log('Slack API Response (views.open):', response.data);
     } catch (e) {
-      Logger.error(e);
+      Logger.error(e.response.data);
     }
   }
 
