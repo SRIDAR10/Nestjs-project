@@ -115,7 +115,7 @@ export class SlackController {
         },
       );
       
-      Logger.log(`${response} response`);
+      Logger.log(JSON.stringify(response.data));
     } catch (e) {
       Logger.error(e);
     }
