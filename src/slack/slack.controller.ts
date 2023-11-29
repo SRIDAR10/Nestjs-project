@@ -181,8 +181,20 @@ export class SlackController {
   async optionsForDropdown(@Body() body: any): Promise<any> {
     console.log('Received payload from Slack:', body);
     const options = [
-      { label: 'Option 1', value: 'option_1' },
-      { label: 'Option 2', value: 'option_2' },
+      {
+        text: {
+          type: 'plain_text',
+          text: 'Option 1',
+        },
+        value: 'option_1',
+      },
+      {
+        text: {
+          type: 'plain_text',
+          text: 'Option 2',
+        },
+        value: 'option_2',
+      },
     ];
     return {options};
   }
