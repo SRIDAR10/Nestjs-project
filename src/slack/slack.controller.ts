@@ -66,6 +66,23 @@ export class SlackController {
               "text": "Select an item",
               "emoji": true
             },
+            "options_load_url": "https://pink-tired-dugong.cyclic.app/slack/options-for-dropdown",
+            "action_id": "static_select-action"
+          }
+        },
+        {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": "Pick an item from the dropdown list"
+          },
+          "accessory": {
+            "type": "static_select",
+            "placeholder": {
+              "type": "plain_text",
+              "text": "Select an item",
+              "emoji": true
+            },
             "options": [
               {
                 "text": {
