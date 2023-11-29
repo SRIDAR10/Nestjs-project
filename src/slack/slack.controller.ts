@@ -36,138 +36,154 @@ export class SlackController {
     const users = await this.slackService.getAllUsers();
 
     const viewPayload = {
-      blocks: [
+      "type": "modal",
+      "title": {
+        "type": "plain_text",
+        "text": "My App",
+        "emoji": true
+      },
+      "submit": {
+        "type": "plain_text",
+        "text": "Submit",
+        "emoji": true
+      },
+      "close": {
+        "type": "plain_text",
+        "text": "Cancel",
+        "emoji": true
+      },
+      "blocks": [
         {
-          type: 'section',
-          text: {
-            type: 'mrkdwn',
-            text: 'Pick an item from the dropdown list',
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": "Pick an item from the dropdown list"
           },
-          accessory: {
-            type: 'static_select',
-            placeholder: {
-              type: 'plain_text',
-              text: 'Select an item',
-              emoji: true,
+          "accessory": {
+            "type": "static_select",
+            "placeholder": {
+              "type": "plain_text",
+              "text": "Select an item",
+              "emoji": true
             },
-            options: [
+            "options": [
               {
-                text: {
-                  type: 'plain_text',
-                  text: '*this is plain_text text*',
-                  emoji: true,
+                "text": {
+                  "type": "plain_text",
+                  "text": "*this is plain_text text*",
+                  "emoji": true
                 },
-                value: 'value-0',
+                "value": "value-0"
               },
               {
-                text: {
-                  type: 'plain_text',
-                  text: '*this is plain_text text*',
-                  emoji: true,
+                "text": {
+                  "type": "plain_text",
+                  "text": "*this is plain_text text*",
+                  "emoji": true
                 },
-                value: 'value-1',
+                "value": "value-1"
               },
               {
-                text: {
-                  type: 'plain_text',
-                  text: '*this is plain_text text*',
-                  emoji: true,
+                "text": {
+                  "type": "plain_text",
+                  "text": "*this is plain_text text*",
+                  "emoji": true
                 },
-                value: 'value-2',
-              },
+                "value": "value-2"
+              }
             ],
-            action_id: 'static_select-action',
-          },
+            "action_id": "static_select-action"
+          }
         },
         {
-          type: 'section',
-          text: {
-            type: 'mrkdwn',
-            text: 'This is a section block with an overflow menu.',
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": "This is a section block with an overflow menu."
           },
-          accessory: {
-            type: 'overflow',
-            options: [
+          "accessory": {
+            "type": "overflow",
+            "options": [
               {
-                text: {
-                  type: 'plain_text',
-                  text: '*this is plain_text text*',
-                  emoji: true,
+                "text": {
+                  "type": "plain_text",
+                  "text": "*this is plain_text text*",
+                  "emoji": true
                 },
-                value: 'value-0',
+                "value": "value-0"
               },
               {
-                text: {
-                  type: 'plain_text',
-                  text: '*this is plain_text text*',
-                  emoji: true,
+                "text": {
+                  "type": "plain_text",
+                  "text": "*this is plain_text text*",
+                  "emoji": true
                 },
-                value: 'value-1',
+                "value": "value-1"
               },
               {
-                text: {
-                  type: 'plain_text',
-                  text: '*this is plain_text text*',
-                  emoji: true,
+                "text": {
+                  "type": "plain_text",
+                  "text": "*this is plain_text text*",
+                  "emoji": true
                 },
-                value: 'value-2',
+                "value": "value-2"
               },
               {
-                text: {
-                  type: 'plain_text',
-                  text: '*this is plain_text text*',
-                  emoji: true,
+                "text": {
+                  "type": "plain_text",
+                  "text": "*this is plain_text text*",
+                  "emoji": true
                 },
-                value: 'value-3',
+                "value": "value-3"
               },
               {
-                text: {
-                  type: 'plain_text',
-                  text: '*this is plain_text text*',
-                  emoji: true,
+                "text": {
+                  "type": "plain_text",
+                  "text": "*this is plain_text text*",
+                  "emoji": true
                 },
-                value: 'value-4',
-              },
+                "value": "value-4"
+              }
             ],
-            action_id: 'overflow-action',
-          },
+            "action_id": "overflow-action"
+          }
         },
         {
-          type: 'section',
-          block_id: 'section678',
-          text: {
-            type: 'mrkdwn',
-            text: 'External Data Source 1',
+          "type": "section",
+          "block_id": "section678",
+          "text": {
+            "type": "mrkdwn",
+            "text": "External Data Source 1"
           },
-          accessory: {
-            action_id: 'text1234',
-            type: 'external_select',
-            placeholder: {
-              type: 'plain_text',
-              text: 'Select an item',
+          "accessory": {
+            "action_id": "text1234",
+            "type": "external_select",
+            "placeholder": {
+              "type": "plain_text",
+              "text": "Select an item"
             },
-            min_query_length: 3,
-          },
+            "min_query_length": 3
+          }
         },
         {
-          type: 'section',
-          block_id: 'section67',
-          text: {
-            type: 'mrkdwn',
-            text: 'External Data Source 2',
+          "type": "section",
+          "block_id": "section67",
+          "text": {
+            "type": "mrkdwn",
+            "text": "External Data Source 2"
           },
-          accessory: {
-            action_id: 'text2',
-            type: 'external_select',
-            placeholder: {
-              type: 'plain_text',
-              text: 'Select an item',
+          "accessory": {
+            "action_id": "text2",
+            "type": "external_select",
+            "placeholder": {
+              "type": "plain_text",
+              "text": "Select an item"
             },
-            min_query_length: 3,
-          },
-        },
-      ],
-    };
+            "min_query_length": 3
+          }
+        }
+      ]
+    }
 
     try {
       const response = await axios.post(
