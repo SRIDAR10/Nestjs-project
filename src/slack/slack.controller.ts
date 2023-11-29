@@ -73,16 +73,7 @@ export class SlackController {
                   "text": "Options Group 1",
                   "emoji": true
                 },
-                "options": [  // Provide at least one item in the options array
-                  {
-                    "text": {
-                      "type": "plain_text",
-                      "text": "Option A",
-                      "emoji": true
-                    },
-                    "value": "option_a"
-                  }
-                ]
+                "options": []
               }
             ],
             "action_id": "static_select-action"
@@ -102,7 +93,7 @@ export class SlackController {
               "type": "plain_text",
               "text": "Select an item"
             },
-            "min_query_length": 3
+            "min_query_length": 0
           }
         },
         {
