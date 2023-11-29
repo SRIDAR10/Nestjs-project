@@ -35,7 +35,7 @@ export class SlackController {
     Logger.log(triggerId);
     const users = await this.slackService.getAllUsers();
 
-    const viewPayload = {
+   const viewPayload = {
       "type": "modal",
       "title": {
         "type": "plain_text",
@@ -66,12 +66,39 @@ export class SlackController {
               "text": "Select an item",
               "emoji": true
             },
-            "options_load_url": "https://pink-tired-dugong.cyclic.app/slack/options-for-dropdown",
+            "option_groups": [
+              {
+                "label": {
+                  "type": "plain_text",
+                  "text": "Loading...",
+                  "emoji": true
+                },
+                "options": []  // Options will be dynamically loaded from your endpoint
+              }
+            ],
             "action_id": "static_select-action"
           }
         },
         {
           "type": "section",
+          "block_id": "external_section",
+          "text": {
+            "type": "mrkdwn",
+            "text": "External Data Source"
+          },
+          "accessory": {
+            "action_id": "external_select-action",
+            "type": "external_select",
+            "placeholder": {
+              "type": "plain_text",
+              "text": "Select an item"
+            },
+            "min_query_length": 3
+          }
+        },
+        {
+          "type": "section",
+          "block_id": "overflow_section",
           "text": {
             "type": "mrkdwn",
             "text": "This is a section block with an overflow menu."
@@ -82,135 +109,33 @@ export class SlackController {
               {
                 "text": {
                   "type": "plain_text",
-                  "text": "*this is plain_text text*",
+                  "text": "Option 1",
                   "emoji": true
                 },
-                "value": "value-0"
+                "value": "option-1"
               },
               {
                 "text": {
                   "type": "plain_text",
-                  "text": "*this is plain_text text*",
+                  "text": "Option 2",
                   "emoji": true
                 },
-                "value": "value-1"
+                "value": "option-2"
               },
               {
                 "text": {
                   "type": "plain_text",
-                  "text": "*this is plain_text text*",
+                  "text": "Option 3",
                   "emoji": true
                 },
-                "value": "value-2"
-              },
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": "*this is plain_text text*",
-                  "emoji": true
-                },
-                "value": "value-3"
-              },
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": "*this is plain_text text*",
-                  "emoji": true
-                },
-                "value": "value-4"
+                "value": "option-3"
               }
             ],
             "action_id": "overflow-action"
           }
-        },
-        {
-          "type": "section",
-          "block_id": "section678",
-          "text": {
-            "type": "mrkdwn",
-            "text": "External Data Source 1"
-          },
-          "accessory": {
-            "action_id": "text1234",
-            "type": "external_select",
-            "placeholder": {
-              "type": "plain_text",
-              "text": "Select an item"
-            },
-            "min_query_length": 3,
-            "options": [
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": "Option A",
-                  "emoji": true
-                },
-                "value": "option_a"
-              },
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": "Option B",
-                  "emoji": true
-                },
-                "value": "option_b"
-              },
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": "Option C",
-                  "emoji": true
-                },
-                "value": "option_c"
-              }
-            ]
-          }
-        },
-        {
-          "type": "section",
-          "block_id": "section67",
-          "text": {
-            "type": "mrkdwn",
-            "text": "External Data Source 2"
-          },
-          "accessory": {
-            "action_id": "text2",
-            "type": "external_select",
-            "placeholder": {
-              "type": "plain_text",
-              "text": "Select an item"
-            },
-            "min_query_length": 3,
-            "options": [
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": "Option X",
-                  "emoji": true
-                },
-                "value": "option_x"
-              },
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": "Option Y",
-                  "emoji": true
-                },
-                "value": "option_y"
-              },
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": "Option Z",
-                  "emoji": true
-                },
-                "value": "option_z"
-              }
-            ]
-          }
         }
       ]
-    };
+    };    
     
     
 
