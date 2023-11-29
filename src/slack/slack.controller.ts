@@ -21,7 +21,7 @@ export class SlackController {
       const channelId = interactionPayload.channel.id;
       const responseUrl = interactionPayload.response_url;
       const triggerId = interactionPayload.trigger_id;
-      Logger.log('triggerId ', triggerId);
+      Logger.log(`triggerId ${triggerId}`);
       Logger.log(`Interaction in channel ${channelId}`);
       await this.sendInitialModalView(triggerId);
       res.status(200).send('OK');
@@ -32,7 +32,7 @@ export class SlackController {
   }
   // Helper method to open a Slack modal
   private async sendInitialModalView(triggerId: string): Promise<void> {
-    Logger.log("triggerId {}", triggerId);
+    Logger.log(triggerId);
     const users = await this.slackService.getAllUsers();
     const viewPayload = {
       type: 'modal',
@@ -115,7 +115,7 @@ export class SlackController {
         },
       );
       
-      Logger.log("response {}",response);
+      Logger.log(`${response} response`);
     } catch (e) {
       Logger.error(e);
     }
