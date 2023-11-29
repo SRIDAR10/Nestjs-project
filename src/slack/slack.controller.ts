@@ -5,15 +5,10 @@ import { SlackService } from './slack.service';
 
 @Controller('slack')
 export class SlackController {
-  private slackApiToken :string
-  // constructor(private slackService : SlackService){
-  //   const users = this.slackService.getAllUsers()
-  //   Logger.log("res", users);
-  // }
+  private slackApiToken: string;
+  constructor(private slackService: SlackService) {}
 
   private readonly slackApiUrl = 'https://slack.com/api';
-
-
 
   @Post('/interactive')
   async handleSlackInteraction(
@@ -37,6 +32,7 @@ export class SlackController {
   }
   // Helper method to open a Slack modal
   private async sendInitialModalView(triggerId: string): Promise<void> {
+    const users = await this.slackService.getAllUsers();
     const viewPayload = {
       type: 'modal',
       callback_id: 'pg-update',
@@ -112,7 +108,7 @@ export class SlackController {
         },
         {
           headers: {
-            Authorization: `Bearer xoxb-6087353163408-6057864588662-cnrcwhRXptzYJyoBIQp2ZO89`,
+            Authorization: `Bearer ${users[0]?.token}`,
             'Content-Type': 'application/json',
           },
         },
@@ -124,18 +120,15 @@ export class SlackController {
 
   @Post('/post-message-with-button')
   async postMessageWithButton(@Body() body: any): Promise<string> {
-    const userId = 'U061WAK3RMY';
-
-    // Post a message with a button
-    await this.sendSlackMessageWithButton(userId);
-
+    await this.sendSlackMessageWithButton();
     return 'OK';
   }
 
-  // Helper method to send a Slack message with a button
-  private async sendSlackMessageWithButton(userId: string): Promise<void> {
+  private async sendSlackMessageWithButton(): Promise<void> {
+    const users = await this.slackService.getAllUsers();
+    Logger.log(users[0].userId);
     const messagePayload = {
-      channel: userId,
+      channel: users[0]?.userId,
       text: 'Click the button to open the modal:',
       attachments: [
         {
@@ -152,14 +145,18 @@ export class SlackController {
         },
       ],
     };
-
+    Logger.log(users[0]?.token);
     try {
-      const response = await axios.post(`${this.slackApiUrl}/chat.postMessage`, messagePayload, {
-        headers: {
-          Authorization: `Bearer xoxb-6087353163408-6057864588662-cnrcwhRXptzYJyoBIQp2ZO89`,
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        `${this.slackApiUrl}/chat.postMessage`,
+        messagePayload,
+        {
+          headers: {
+            Authorization: `Bearer ${users[0]?.token}`,
+            'Content-Type': 'application/json',
+          },
         },
-      });
+      );
       console.log('Slack API Response:', response.data);
     } catch (error) {
       console.error('Error posting message to Slack:', error.message);

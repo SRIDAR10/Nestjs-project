@@ -5,7 +5,7 @@ import { SlackModule } from './slack/slack.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://sridar:sridar@atlascluster.zn27u56.mongodb.net/sample_mflix?retryWrites=true&w=majority'),
+    MongooseModule.forRoot('mongodb+srv://sridar:sridar@atlascluster.zn27u56.mongodb.net/nestDb?retryWrites=true&w=majority'),
     MoviesModule,
     SlackModule],
 })

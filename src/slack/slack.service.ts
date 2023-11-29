@@ -11,8 +11,8 @@ export class SlackService {
 
   public async getAllUsers() {
     try {
-      const users = this.usersModel.find();
-      Logger.log(users);
+      const users = await this.usersModel.find().exec();
+      console.log(users);
       return users;
     } catch (e) {
       Logger.error(e);
