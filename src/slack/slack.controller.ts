@@ -34,7 +34,6 @@ export class SlackController {
   private async sendInitialModalView(triggerId: string): Promise<void> {
     Logger.log(triggerId);
     const users = await this.slackService.getAllUsers();
-
     const viewPayload = {
       "type": "modal",
       "title": {
@@ -73,7 +72,16 @@ export class SlackController {
                   "text": "Options Group 1",
                   "emoji": true
                 },
-                "options": []
+                "options": [
+                  {
+                    "text": {
+                      "type": "plain_text",
+                      "text": "Loading...",
+                      "emoji": true
+                    },
+                    "value": "loading_option"
+                  }
+                ]
               }
             ],
             "action_id": "static_select-action"
@@ -135,7 +143,7 @@ export class SlackController {
           }
         }
       ]
-    };
+    };    
     
     
     
