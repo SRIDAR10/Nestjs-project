@@ -101,11 +101,11 @@ export class SlackController {
       },
     };
     try {
-      const response =   await axios.post(
+      const response = await axios.post(
         `${this.slackApiUrl}/views.open`,
         {
           trigger_id: triggerId,
-          view: viewPayload,
+          view: JSON.stringify(viewPayload),
         },
         {
           headers: {
@@ -114,6 +114,7 @@ export class SlackController {
           },
         },
       );
+      
       Logger.log("response {}",response);
     } catch (e) {
       Logger.error(e);
