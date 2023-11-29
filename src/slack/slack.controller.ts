@@ -106,6 +106,23 @@ export class SlackController {
         },
         {
           "type": "section",
+          "block_id": "external_section",
+          "text": {
+            "type": "mrkdwn",
+            "text": "External Data Source"
+          },
+          "accessory": {
+            "action_id": "external_select-action-1",
+            "type": "external_select",
+            "placeholder": {
+              "type": "plain_text",
+              "text": "Select an item"
+            },
+            "min_query_length": 0
+          }
+        },
+        {
+          "type": "section",
           "block_id": "overflow_section",
           "text": {
             "type": "mrkdwn",
@@ -213,7 +230,7 @@ export class SlackController {
               name: 'open-modal',
               text: 'Open Modal',
               type: 'button',
-              value: 'open-modal',
+              value: "userId====================>",
             },
           ],
         },
