@@ -2,6 +2,7 @@ import { Controller, Post, Req, Res, Logger, Body } from '@nestjs/common';
 import { Response } from 'express';
 import axios from 'axios';
 import { SlackService } from './slack.service';
+import { json } from 'stream/consumers';
 
 @Controller('slack')
 export class SlackController {
@@ -41,11 +42,12 @@ export class SlackController {
 
   @Post('/slash-command')
   async handleSlashCommand(
-    @Body('payload') payload: string,
+    @Body() payload: string,
     @Res() res: Response,
   ): Promise<any> {
     try {
       Logger.log(`slash command payload ${payload}`);
+      Logger.log(`slash command payload ${JSON.parse(payload)}`);
       res.status(200).json({ response_action: 'clear' });
     } catch (error) {
       Logger.error('Error handling interaction:', error);
