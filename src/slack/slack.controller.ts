@@ -18,13 +18,35 @@ export class SlackController {
     try {
       const interactionPayload = JSON.parse(payload);
       Logger.log(interactionPayload);
-      const channelId = interactionPayload.channel.id;
-      const responseUrl = interactionPayload.response_url;
-      const triggerId = interactionPayload.trigger_id;
-      Logger.log(`triggerId ${triggerId}`);
-      Logger.log(`Interaction in channel ${channelId}`);
-      await this.sendInitialModalView(triggerId);
-      res.status(200).send('OK');
+
+      if (interactionPayload.type === 'block_actions') {
+        const channelId = interactionPayload.channel.id;
+        const responseUrl = interactionPayload.response_url;
+        const triggerId = interactionPayload.trigger_id;
+        Logger.log(`triggerId ${triggerId}`);
+        Logger.log(`Interaction in channel ${channelId}`);
+        await this.sendInitialModalView(triggerId);
+        res.status(200).json({ response_action: 'clear' });
+      } else if (interactionPayload.type === 'view_submission') {
+        const submittedValues = interactionPayload.view.state.values;
+        Logger.log(`Submitted values ${submittedValues}`);
+        res.status(200).json({ response_action: 'clear' });
+      }
+      res.status(200).json({ response_action: 'clear' });
+    } catch (error) {
+      Logger.error('Error handling interaction:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  }
+
+  @Post('/slash-command')
+  async handleSlashCommand(
+    @Body('payload') payload: string,
+    @Res() res: Response,
+  ): Promise<any> {
+    try {
+      Logger.log(`slash command payload ${payload}`);
+      res.status(200).json({ response_action: 'clear' });
     } catch (error) {
       Logger.error('Error handling interaction:', error);
       res.status(500).send('Internal Server Error');
@@ -35,135 +57,132 @@ export class SlackController {
     Logger.log(triggerId);
     const users = await this.slackService.getAllUsers();
     const viewPayload = {
-      "type": "modal",
-      "title": {
-        "type": "plain_text",
-        "text": "My App",
-        "emoji": true
+      type: 'modal',
+      title: {
+        type: 'plain_text',
+        text: 'My App',
+        emoji: true,
       },
-      "submit": {
-        "type": "plain_text",
-        "text": "Submit",
-        "emoji": true
+      submit: {
+        type: 'plain_text',
+        text: 'Submit',
+        emoji: true,
       },
-      "close": {
-        "type": "plain_text",
-        "text": "Cancel",
-        "emoji": true
+      close: {
+        type: 'plain_text',
+        text: 'Cancel',
+        emoji: true,
       },
-      "blocks": [
+      blocks: [
         {
-          "type": "section",
-          "text": {
-            "type": "mrkdwn",
-            "text": "Pick an item from the dropdown list"
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: 'Pick an item from the dropdown list',
           },
-          "accessory": {
-            "type": "static_select",
-            "placeholder": {
-              "type": "plain_text",
-              "text": "Select an item",
-              "emoji": true
+          accessory: {
+            type: 'static_select',
+            placeholder: {
+              type: 'plain_text',
+              text: 'Select an item',
+              emoji: true,
             },
-            "option_groups": [
+            option_groups: [
               {
-                "label": {
-                  "type": "plain_text",
-                  "text": "Options Group 1",
-                  "emoji": true
+                label: {
+                  type: 'plain_text',
+                  text: 'Options Group 1',
+                  emoji: true,
                 },
-                "options": [
+                options: [
                   {
-                    "text": {
-                      "type": "plain_text",
-                      "text": "Loading...",
-                      "emoji": true
+                    text: {
+                      type: 'plain_text',
+                      text: 'Loading...',
+                      emoji: true,
                     },
-                    "value": "loading_option"
-                  }
-                ]
-              }
+                    value: 'loading_option',
+                  },
+                ],
+              },
             ],
-            "action_id": "static_select-action"
-          }
+            action_id: 'static_select-action',
+          },
         },
         {
-          "type": "section",
-          "block_id": "external_section",
-          "text": {
-            "type": "mrkdwn",
-            "text": "External Data Source"
+          type: 'section',
+          block_id: 'external_section',
+          text: {
+            type: 'mrkdwn',
+            text: 'External Data Source',
           },
-          "accessory": {
-            "action_id": "external_select-action",
-            "type": "external_select",
-            "placeholder": {
-              "type": "plain_text",
-              "text": "Select an item"
+          accessory: {
+            action_id: 'external_select-action',
+            type: 'external_select',
+            placeholder: {
+              type: 'plain_text',
+              text: 'Select an item',
             },
-            "min_query_length": 0
-          }
+            min_query_length: 0,
+          },
         },
         {
-          "type": "section",
-          "block_id": "external_section_1",
-          "text": {
-            "type": "mrkdwn",
-            "text": "External Data Source"
+          type: 'section',
+          block_id: 'external_section_1',
+          text: {
+            type: 'mrkdwn',
+            text: 'External Data Source',
           },
-          "accessory": {
-            "action_id": "external_select-action-1",
-            "type": "external_select",
-            "placeholder": {
-              "type": "plain_text",
-              "text": "Select an item"
+          accessory: {
+            action_id: 'external_select-action-1',
+            type: 'external_select',
+            placeholder: {
+              type: 'plain_text',
+              text: 'Select an item',
             },
-            "min_query_length": 0
-          }
+            min_query_length: 0,
+          },
         },
         {
-          "type": "section",
-          "block_id": "overflow_section",
-          "text": {
-            "type": "mrkdwn",
-            "text": "This is a section block with an overflow menu."
+          type: 'section',
+          block_id: 'overflow_section',
+          text: {
+            type: 'mrkdwn',
+            text: 'This is a section block with an overflow menu.',
           },
-          "accessory": {
-            "type": "overflow",
-            "options": [
+          accessory: {
+            type: 'overflow',
+            options: [
               {
-                "text": {
-                  "type": "plain_text",
-                  "text": "Option 1",
-                  "emoji": true
+                text: {
+                  type: 'plain_text',
+                  text: 'Option 1',
+                  emoji: true,
                 },
-                "value": "option-1"
+                value: 'option-1',
               },
               {
-                "text": {
-                  "type": "plain_text",
-                  "text": "Option 2",
-                  "emoji": true
+                text: {
+                  type: 'plain_text',
+                  text: 'Option 2',
+                  emoji: true,
                 },
-                "value": "option-2"
+                value: 'option-2',
               },
               {
-                "text": {
-                  "type": "plain_text",
-                  "text": "Option 3",
-                  "emoji": true
+                text: {
+                  type: 'plain_text',
+                  text: 'Option 3',
+                  emoji: true,
                 },
-                "value": "option-3"
-              }
+                value: 'option-3',
+              },
             ],
-            "action_id": "overflow-action"
-          }
-        }
-      ]
-    };    
-    
-    
-    
+            action_id: 'overflow-action',
+          },
+        },
+      ],
+    };
 
     try {
       const response = await axios.post(
@@ -212,7 +231,7 @@ export class SlackController {
         value: 'option_2',
       },
     ];
-    return {options};
+    return { options };
   }
 
   private async sendSlackMessageWithButton(): Promise<void> {
@@ -230,7 +249,7 @@ export class SlackController {
               name: 'open-modal',
               text: 'Open Modal',
               type: 'button',
-              value: "userId====================>",
+              value: 'userId====================>',
             },
           ],
         },
