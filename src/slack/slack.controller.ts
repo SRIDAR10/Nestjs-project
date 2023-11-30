@@ -46,7 +46,7 @@ export class SlackController {
     @Res() res: Response,
   ): Promise<any> {
     try {
-      Logger.log(`slash command payload ${payload}`);
+      Logger.log(`slash command payload ${JSON.stringify(payload)}`);
       res.status(200).json({ response_action: 'clear' });
     } catch (error) {
       Logger.error('Error handling interaction:', error);
