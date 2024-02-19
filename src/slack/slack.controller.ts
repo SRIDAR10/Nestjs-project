@@ -54,8 +54,42 @@ export class SlackController {
       Logger.log(payload);
       Logger.log(payload?.command);
      Logger.log(`triggerId ==============================> \n ${payload?.trigger_id}, ${payload.user_name}, ${payload["trigger_id"]}`);
-     res.status(200).send();
-      await this.sendInitialModalView(payload?.trigger_id);
+     const users = await this.slackService.getAllUsers();
+     const slackAPI = axios.create({
+      baseURL: 'https://slack.com/api',
+      headers: {
+        Authorization: `Bearer ${users[0]?.token}`
+      }
+    });
+     try {
+      const modalResponse = await slackAPI.post('/views.open', {
+        trigger_id: payload?.trigger_id,
+        view: {
+          type: 'modal',
+          callback_id: 'my_modal',
+          title: {
+            type: 'plain_text',
+            text: 'My Modal'
+          },
+          blocks: [
+          ],
+          submit: {
+            type: 'plain_text',
+            text: 'Submit'
+          }
+        }
+      });
+  
+      // Handle the response if needed
+      console.log(modalResponse.data);
+  
+      res.send('Modal opened');
+    } catch (error) {
+      console.error('Error opening modal:', error);
+      res.status(500).send('Error opening modal');
+    }
+    //  res.status(200).send();
+    //   await this.sendInitialModalView(payload?.trigger_id);
       // res.status(200).json({ response_action: 'clear' });
     } catch (error) {
       Logger.error('Error handling interaction:', error);
