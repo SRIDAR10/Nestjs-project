@@ -211,7 +211,7 @@ export class SlackController {
       );
 
       // Log the response from views.open
-      Logger.log('Slack API Response (views.open):', response);
+      Logger.log(`SlacK RESPONSE ${response}`);
     } catch (e) {
       Logger.error("error while opening modAL", e);
     }
