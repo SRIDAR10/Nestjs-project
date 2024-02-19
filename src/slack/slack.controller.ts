@@ -189,30 +189,12 @@ export class SlackController {
           },
         ],
       };
-      const modal = {
-        trigger_id : triggerId,
-        view: {
-          type: 'modal',
-          callback_id: 'my_modal',
-          title: {
-            type: 'plain_text',
-            text: 'My Modal',
-          },
-          blocks: [
-            // Add your modal blocks here
-            // See https://api.slack.com/reference/block-kit/blocks for block types
-          ],
-          submit: {
-            type: 'plain_text',
-            text: 'Submit',
-          },
-        },
-      };
+      
       const response = await axios.post(
         `${this.slackApiUrl}/views.open`,
         {
           trigger_id : triggerId,
-          view: modal,
+          view: viewPayload,
         },
         {
           headers: {
