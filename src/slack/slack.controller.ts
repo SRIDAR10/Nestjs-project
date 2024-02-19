@@ -51,10 +51,7 @@ export class SlackController {
     try {
       Logger.log(`slash command payload type: ${typeof payload}`);
       Logger.log(`slash command payload content: ${JSON.stringify(payload)} token => ${payload?.token}`);
-      const interactionPayload = payload;
-      Logger.log("triggerId ==============================>", interactionPayload);
-      const triggerId = interactionPayload?.trigger_id ?? "";
-     Logger.log("triggerId ==============================>", payload?.trigger_id);
+     Logger.log("triggerId ==============================>", payload?.trigger_id, payload.user_name, payload["trigger_id"]);
       await this.sendInitialModalView(payload?.trigger_id);
       res.status(200);
       // res.status(200).json({ response_action: 'clear' });
