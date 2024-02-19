@@ -209,9 +209,8 @@ export class SlackController {
           },
         },
       );
-    
-      // Log specific properties of the response from views.open
-      Logger.log('Slack API Response (views.open):', JSON.stringify(
+    Logger.log(response);
+      Logger.log(JSON.stringify(
         {
           status: response.status,
           data: response.data,
