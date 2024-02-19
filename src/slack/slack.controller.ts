@@ -205,7 +205,7 @@ export class SlackController {
         },
         {
           headers: {
-            Authorization: `Bearer ${users[0]?.token}`,
+            Authorization: `Bearer xoxb-6661247782339-6654802977526-MfwTb8nmSZifvcVtb4gwDRuf`,
             'Content-Type': 'application/json',
           },
         },
