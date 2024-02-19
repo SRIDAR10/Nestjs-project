@@ -209,12 +209,21 @@ export class SlackController {
           },
         },
       );
-
-      // Log the response from views.open
-      Logger.log(`SlacK RESPONSE ${response}`);
+    
+      // Log specific properties of the response from views.open
+      Logger.log('Slack API Response (views.open):', {
+        status: response.status,
+        data: response.data,
+        headers: response.headers,
+      });
     } catch (e) {
-      Logger.error("error while opening modAL", e);
+      if (e.response && e.response.data && e.response.data.error === 'expired_trigger_id') {
+        Logger.error('Trigger ID has expired. Obtain a new one and retry.');
+      } else {
+        Logger.error('Error while opening modal:', e.response ? e.response.data : e.message);
+      }
     }
+    
   }
 
   @Post('/post-message-with-button')
