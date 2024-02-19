@@ -54,8 +54,8 @@ export class SlackController {
       const interactionPayload = payload;
       Logger.log("triggerId ==============================>", interactionPayload);
       const triggerId = interactionPayload?.trigger_id ?? "";
-     Logger.log("triggerId ==============================>", triggerId);
-      await this.sendInitialModalView(triggerId);
+     Logger.log("triggerId ==============================>", payload?.trigger_id);
+      await this.sendInitialModalView(payload?.trigger_id);
       res.status(200);
       // res.status(200).json({ response_action: 'clear' });
     } catch (error) {
