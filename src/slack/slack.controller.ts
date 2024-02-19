@@ -211,11 +211,13 @@ export class SlackController {
       );
     
       // Log specific properties of the response from views.open
-      Logger.log('Slack API Response (views.open):', {
-        status: response.status,
-        data: response.data,
-        headers: response.headers,
-      });
+      Logger.log('Slack API Response (views.open):', JSON.stringify(
+        {
+          status: response.status,
+          data: response.data,
+          headers: response.headers,
+        }
+      ));
     } catch (e) {
       if (e.response && e.response.data && e.response.data.error === 'expired_trigger_id') {
         Logger.error('Trigger ID has expired. Obtain a new one and retry.');
