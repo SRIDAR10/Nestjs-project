@@ -63,8 +63,8 @@ export class SlackController {
     }
   }  
 
-  private async sendInitialModalView(triggerId: string): Promise<void> {
-    Logger.log("inside func ",triggerId);
+  private async sendInitialModalView(triggerId: any): Promise<void> {
+    Logger.log(`inside func ${triggerId}`);
     const users = await this.slackService.getAllUsers();
     Logger.log("all users", users);
     const viewPayload = {
@@ -211,7 +211,7 @@ export class SlackController {
       );
 
       // Log the response from views.open
-      Logger.log('Slack API Response (views.open):', response.data);
+      Logger.log('Slack API Response (views.open):', response);
     } catch (e) {
       Logger.error("error while opening modAL", e.response.data);
     }
