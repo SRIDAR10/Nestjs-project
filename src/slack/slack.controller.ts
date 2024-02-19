@@ -49,48 +49,9 @@ export class SlackController {
     @Res() res: Response,
   ): Promise<any> {
     try {
-      Logger.log(`slash command payload type: ${typeof payload}`);
       Logger.log(`slash command payload content: ${JSON.stringify(payload)} token => ${payload?.token}`);
-      Logger.log(payload);
-      Logger.log(payload?.command);
-     Logger.log(`triggerId ==============================> \n ${payload?.trigger_id}, ${payload.user_name}, ${payload["trigger_id"]}`);
-     const users = await this.slackService.getAllUsers();
-     const slackAPI = axios.create({
-      baseURL: 'https://slack.com/api',
-      headers: {
-        Authorization: `Bearer ${users[0]?.token}`
-      }
-    });
-     try {
-      const modalResponse = await slackAPI.post('/views.open', {
-        trigger_id: payload?.trigger_id,
-        view: {
-          type: 'modal',
-          callback_id: 'my_modal',
-          title: {
-            type: 'plain_text',
-            text: 'My Modal'
-          },
-          blocks: [
-          ],
-          submit: {
-            type: 'plain_text',
-            text: 'Submit'
-          }
-        }
-      });
-  
-      // Handle the response if needed
-      console.log(modalResponse.data);
-  
-      res.send('Modal opened');
-    } catch (error) {
-      console.error('Error opening modal:', error);
-      res.status(500).send('Error opening modal');
-    }
-    //  res.status(200).send();
-    //   await this.sendInitialModalView(payload?.trigger_id);
-      // res.status(200).json({ response_action: 'clear' });
+      await this.sendInitialModalView(payload?.trigger_id);
+      res.status(200).send();
     } catch (error) {
       Logger.error('Error handling interaction:', error);
       res.status(500).send('Internal Server Error');
@@ -228,11 +189,30 @@ export class SlackController {
           },
         ],
       };
+      const modal = {
+        trigger_id : triggerId,
+        view: {
+          type: 'modal',
+          callback_id: 'my_modal',
+          title: {
+            type: 'plain_text',
+            text: 'My Modal',
+          },
+          blocks: [
+            // Add your modal blocks here
+            // See https://api.slack.com/reference/block-kit/blocks for block types
+          ],
+          submit: {
+            type: 'plain_text',
+            text: 'Submit',
+          },
+        },
+      };
       const response = await axios.post(
         `${this.slackApiUrl}/views.open`,
         {
-          trigger_id: triggerId,
-          view: viewPayload,
+          trigger_id : triggerId,
+          view: modal,
         },
         {
           headers: {
