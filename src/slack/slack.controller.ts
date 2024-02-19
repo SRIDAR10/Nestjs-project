@@ -52,8 +52,9 @@ export class SlackController {
       Logger.log(`slash command payload type: ${typeof payload}`);
       Logger.log(`slash command payload content: ${JSON.stringify(payload)} token => ${payload?.token}`);
       const interactionPayload = JSON.parse(payload);
-      const triggerId = interactionPayload.trigger_id;
-     Logger.log("triggerId", triggerId);
+      Logger.log("triggerId ==============================>", interactionPayload);
+      const triggerId = interactionPayload?.trigger_id ?? "";
+     Logger.log("triggerId ==============================>", triggerId);
       await this.sendInitialModalView(triggerId);
       res.status(200);
       // res.status(200).json({ response_action: 'clear' });
@@ -66,7 +67,7 @@ export class SlackController {
   private async sendInitialModalView(triggerId: string): Promise<void> {
     Logger.log("inside func ",triggerId);
     const users = await this.slackService.getAllUsers();
-    Logger.log("all users", users, users[0]?.token);
+    Logger.log("all users", users);
     const viewPayload = {
       type: 'modal',
       title: {
