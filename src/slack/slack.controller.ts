@@ -54,8 +54,8 @@ export class SlackController {
       Logger.log(payload);
       Logger.log(payload?.command);
      Logger.log(`triggerId ==============================> \n ${payload?.trigger_id}, ${payload.user_name}, ${payload["trigger_id"]}`);
+     res.status(200).send();
       await this.sendInitialModalView(payload?.trigger_id);
-      res.status(200).end();
       // res.status(200).json({ response_action: 'clear' });
     } catch (error) {
       Logger.error('Error handling interaction:', error);
