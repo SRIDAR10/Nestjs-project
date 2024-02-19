@@ -2,7 +2,6 @@ import { Controller, Post, Req, Res, Logger, Body } from '@nestjs/common';
 import { Response } from 'express';
 import axios from 'axios';
 import { SlackService } from './slack.service';
-import { json } from 'stream/consumers';
 
 @Controller('slack')
 export class SlackController {
@@ -18,9 +17,10 @@ export class SlackController {
   ): Promise<any> {
     try {
       const interactionPayload = JSON.parse(payload);
-      Logger.log(interactionPayload);
+      Logger.log(payload, interactionPayload, interactionPayload.type);
 
       if (interactionPayload.type === 'block_actions') {
+        try{
         const channelId = interactionPayload.channel.id;
         const responseUrl = interactionPayload.response_url;
         const triggerId = interactionPayload.trigger_id;
@@ -28,6 +28,9 @@ export class SlackController {
         Logger.log(`Interaction in channel ${channelId}`);
         await this.sendInitialModalView(triggerId);
         res.status(200).json({ response_action: 'clear' });
+        } catch(e){
+          Logger.log(e);
+        }
       } else if (interactionPayload.type === 'view_submission') {
         const submittedValues = interactionPayload.view.state.values;
         Logger.log(`Submitted values ${submittedValues}`);
@@ -204,7 +207,7 @@ export class SlackController {
       // Log the response from views.open
       Logger.log('Slack API Response (views.open):', response.data);
     } catch (e) {
-      Logger.error(e.response.data);
+      Logger.error("error while opening modAL", e.response.data);
     }
   }
 
