@@ -50,8 +50,8 @@ export class SlackController {
   ): Promise<any> {
     try {
       Logger.log(`slash command payload content: ${JSON.stringify(payload)} token => ${payload?.token}`);
-      await this.sendInitialModalView(payload?.trigger_id);
       res.status(200).send();
+      await this.sendInitialModalView(payload?.trigger_id);
     } catch (error) {
       Logger.error('Error handling interaction:', error);
       res.status(500).send('Internal Server Error');
