@@ -213,7 +213,7 @@ export class SlackController {
       // Log the response from views.open
       Logger.log('Slack API Response (views.open):', response);
     } catch (e) {
-      Logger.error("error while opening modAL", e.response.data);
+      Logger.error("error while opening modAL", e);
     }
   }
 
@@ -278,7 +278,7 @@ export class SlackController {
           },
         },
       );
-      Logger.log(JSON.stringify(response.data));
+      Logger.log(JSON.stringify(response));
     } catch (error) {
       console.error('Error posting message to Slack:', error.message);
     }
