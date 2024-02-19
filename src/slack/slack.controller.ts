@@ -51,7 +51,7 @@ export class SlackController {
     try {
       Logger.log(`slash command payload type: ${typeof payload}`);
       Logger.log(`slash command payload content: ${JSON.stringify(payload)} token => ${payload?.token}`);
-      const interactionPayload = JSON.parse(payload);
+      const interactionPayload = payload;
       Logger.log("triggerId ==============================>", interactionPayload);
       const triggerId = interactionPayload?.trigger_id ?? "";
      Logger.log("triggerId ==============================>", triggerId);
