@@ -64,138 +64,136 @@ export class SlackController {
   }  
 
   private async sendInitialModalView(triggerId: any): Promise<void> {
-    Logger.log(`inside func ${triggerId}`);
-    const users = await this.slackService.getAllUsers();
-    Logger.log("all users", users);
-    const viewPayload = {
-      type: 'modal',
-      title: {
-        type: 'plain_text',
-        text: 'My App',
-        emoji: true,
-      },
-      submit: {
-        type: 'plain_text',
-        text: 'Submit',
-        emoji: true,
-      },
-      close: {
-        type: 'plain_text',
-        text: 'Cancel',
-        emoji: true,
-      },
-      blocks: [
-        {
-          type: 'section',
-          text: {
-            type: 'mrkdwn',
-            text: 'Pick an item from the dropdown list',
-          },
-          accessory: {
-            type: 'static_select',
-            placeholder: {
-              type: 'plain_text',
-              text: 'Select an item',
-              emoji: true,
-            },
-            option_groups: [
-              {
-                label: {
-                  type: 'plain_text',
-                  text: 'Options Group 1',
-                  emoji: true,
-                },
-                options: [
-                  {
-                    text: {
-                      type: 'plain_text',
-                      text: 'Loading...',
-                      emoji: true,
-                    },
-                    value: 'loading_option',
-                  },
-                ],
-              },
-            ],
-            action_id: 'static_select-action',
-          },
-        },
-        {
-          type: 'section',
-          block_id: 'external_section',
-          text: {
-            type: 'mrkdwn',
-            text: 'External Data Source',
-          },
-          accessory: {
-            action_id: 'external_select-action',
-            type: 'external_select',
-            placeholder: {
-              type: 'plain_text',
-              text: 'Select an item',
-            },
-            min_query_length: 0,
-          },
-        },
-        {
-          type: 'section',
-          block_id: 'external_section_1',
-          text: {
-            type: 'mrkdwn',
-            text: 'External Data Source',
-          },
-          accessory: {
-            action_id: 'external_select-action-1',
-            type: 'external_select',
-            placeholder: {
-              type: 'plain_text',
-              text: 'Select an item',
-            },
-            min_query_length: 0,
-          },
-        },
-        {
-          type: 'section',
-          block_id: 'overflow_section',
-          text: {
-            type: 'mrkdwn',
-            text: 'This is a section block with an overflow menu.',
-          },
-          accessory: {
-            type: 'overflow',
-            options: [
-              {
-                text: {
-                  type: 'plain_text',
-                  text: 'Option 1',
-                  emoji: true,
-                },
-                value: 'option-1',
-              },
-              {
-                text: {
-                  type: 'plain_text',
-                  text: 'Option 2',
-                  emoji: true,
-                },
-                value: 'option-2',
-              },
-              {
-                text: {
-                  type: 'plain_text',
-                  text: 'Option 3',
-                  emoji: true,
-                },
-                value: 'option-3',
-              },
-            ],
-            action_id: 'overflow-action',
-          },
-        },
-      ],
-    };
-    Logger.log("payload created", viewPayload);
     try {
+      const users = await this.slackService.getAllUsers();
+      
+      const viewPayload = {
+        type: 'modal',
+        title: {
+          type: 'plain_text',
+          text: 'My App',
+          emoji: true,
+        },
+        submit: {
+          type: 'plain_text',
+          text: 'Submit',
+          emoji: true,
+        },
+        close: {
+          type: 'plain_text',
+          text: 'Cancel',
+          emoji: true,
+        },
+        blocks: [
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: 'Pick an item from the dropdown list',
+            },
+            accessory: {
+              type: 'static_select',
+              placeholder: {
+                type: 'plain_text',
+                text: 'Select an item',
+                emoji: true,
+              },
+              option_groups: [
+                {
+                  label: {
+                    type: 'plain_text',
+                    text: 'Options Group 1',
+                    emoji: true,
+                  },
+                  options: [
+                    {
+                      text: {
+                        type: 'plain_text',
+                        text: 'Loading...',
+                        emoji: true,
+                      },
+                      value: 'loading_option',
+                    },
+                  ],
+                },
+              ],
+              action_id: 'static_select-action',
+            },
+          },
+          {
+            type: 'section',
+            block_id: 'external_section',
+            text: {
+              type: 'mrkdwn',
+              text: 'External Data Source',
+            },
+            accessory: {
+              action_id: 'external_select-action',
+              type: 'external_select',
+              placeholder: {
+                type: 'plain_text',
+                text: 'Select an item',
+              },
+              min_query_length: 0,
+            },
+          },
+          {
+            type: 'section',
+            block_id: 'external_section_1',
+            text: {
+              type: 'mrkdwn',
+              text: 'External Data Source',
+            },
+            accessory: {
+              action_id: 'external_select-action-1',
+              type: 'external_select',
+              placeholder: {
+                type: 'plain_text',
+                text: 'Select an item',
+              },
+              min_query_length: 0,
+            },
+          },
+          {
+            type: 'section',
+            block_id: 'overflow_section',
+            text: {
+              type: 'mrkdwn',
+              text: 'This is a section block with an overflow menu.',
+            },
+            accessory: {
+              type: 'overflow',
+              options: [
+                {
+                  text: {
+                    type: 'plain_text',
+                    text: 'Option 1',
+                    emoji: true,
+                  },
+                  value: 'option-1',
+                },
+                {
+                  text: {
+                    type: 'plain_text',
+                    text: 'Option 2',
+                    emoji: true,
+                  },
+                  value: 'option-2',
+                },
+                {
+                  text: {
+                    type: 'plain_text',
+                    text: 'Option 3',
+                    emoji: true,
+                  },
+                  value: 'option-3',
+                },
+              ],
+              action_id: 'overflow-action',
+            },
+          },
+        ],
+      };
       const response = await axios.post(
         `${this.slackApiUrl}/views.open`,
         {
@@ -207,24 +205,22 @@ export class SlackController {
             Authorization: `Bearer ${users[0]?.token}`,
             'Content-Type': 'application/json',
           },
-        },
-      );
-    Logger.log(response);
-      Logger.log(JSON.stringify(
-        {
-          status: response.status,
-          data: response.data,
-          headers: response.headers,
         }
-      ));
-    } catch (e) {
-      if (e.response && e.response.data && e.response.data.error === 'expired_trigger_id') {
+      );
+  
+      if (response.status === 200) {
+        Logger.log('Modal opened successfully:', response.data);
+      } else {
+        Logger.error('Error opening modal. Status:', response.status);
+      }
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.error === 'expired_trigger_id') {
         Logger.error('Trigger ID has expired. Obtain a new one and retry.');
       } else {
-        Logger.error('Error while opening modal:', e.response ? e.response.data : e.message);
+        Logger.error('Error while opening modal:', error.response ? error.response.data : error.message);
+        Logger.error(error.stack);
       }
     }
-    
   }
 
   @Post('/post-message-with-button')
