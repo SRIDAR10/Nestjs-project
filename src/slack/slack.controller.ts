@@ -50,7 +50,7 @@ export class SlackController {
   ): Promise<any> {
     try {
       Logger.log(`slash command payload content: ${JSON.stringify(payload)} token => ${payload?.token}`);
-      res.status(200).send();
+      res.status(200);
       await this.sendInitialModalView(payload?.trigger_id);
     } catch (error) {
       Logger.error('Error handling interaction:', error);
@@ -189,7 +189,7 @@ export class SlackController {
           },
         ],
       };
-      
+
       const response = await axios.post(
         `${this.slackApiUrl}/views.open`,
         {
@@ -201,6 +201,7 @@ export class SlackController {
             Authorization: `Bearer ${users[0]?.token}`,
             'Content-Type': 'application/json',
           },
+          timeout: 5000
         }
       );
   
