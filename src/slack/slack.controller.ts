@@ -50,8 +50,8 @@ export class SlackController {
   ): Promise<any> {
     try {
       Logger.log(`slash command payload content: ${JSON.stringify(payload)} token => ${payload?.token}`);
-      res.status(200);
       await this.sendInitialModalView(payload?.trigger_id);
+      return "OK";
     } catch (error) {
       Logger.error('Error handling interaction:', error);
       res.status(500).send('Internal Server Error');
@@ -316,7 +316,7 @@ export class SlackController {
       } else {
         Logger.error('Error opening modal. Status:', response.status);
       }
-      
+
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error === 'expired_trigger_id') {
         Logger.error('Trigger ID has expired. Obtain a new one and retry.');
