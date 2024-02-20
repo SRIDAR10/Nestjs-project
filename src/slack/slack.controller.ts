@@ -54,11 +54,10 @@ export class SlackController {
       Logger.log(`slash command payload content: ${JSON.stringify(payload)} token => ${payload?.token}`);
       
       // Send immediate response to acknowledge the command
-      res.status(200).send('Processing...');
   
       // Open the modal without delay
       await this.sendInitialModalView(payload?.trigger_id);
-      return "OK";
+      res.status(200).send('Processing...');
     } catch (error) {
       Logger.error('Error handling interaction:', error);
       res.status(500).send('Internal Server Error');
