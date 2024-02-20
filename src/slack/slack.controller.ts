@@ -68,238 +68,135 @@ export class SlackController {
   private async sendInitialModalView(triggerId: any) {
     try {
       const users = await this.slackService.getAllUsers();
-      const viewPayload={
-        "type": "modal",
-        "title": {
-          "type": "plain_text",
-          "text": "My App",
-          "emoji": true
-        },
-        "submit": {
-          "type": "plain_text",
-          "text": "Submit",
-          "emoji": true
-        },
-        "close": {
-          "type": "plain_text",
-          "text": "Cancel",
-          "emoji": true
-        },
-        "blocks": [
-          {
-            "type": "section",
-            "text": {
-              "type": "mrkdwn",
-              "text": "Hello, Assistant to the Regional Manager Dwight! *Michael Scott* wants to know where you'd like to take the Paper Company investors to dinner tonight.\n\n *Please select a restaurant:*"
-            }
-          },
-          {
-            "type": "divider"
-          },
-          {
-            "type": "section",
-            "text": {
-              "type": "mrkdwn",
-              "text": "*Farmhouse Thai Cuisine*\n:star::star::star::star: 1528 reviews\n They do have some vegan options, like the roti and curry, plus they have a ton of salad stuff and noodles can be ordered without meat!! They have something for everyone here"
-            },
-            "accessory": {
-              "type": "image",
-              "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/c7ed05m9lC2EmA3Aruue7A/o.jpg",
-              "alt_text": "alt text for image"
-            }
-          },
-          {
-            "type": "section",
-            "text": {
-              "type": "mrkdwn",
-              "text": "*Kin Khao*\n:star::star::star::star: 1638 reviews\n The sticky rice also goes wonderfully with the caramelized pork belly, which is absolutely melt-in-your-mouth and so soft."
-            },
-            "accessory": {
-              "type": "image",
-              "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/korel-1YjNtFtJlMTaC26A/o.jpg",
-              "alt_text": "alt text for image"
-            }
-          },
-          {
-            "type": "section",
-            "text": {
-              "type": "mrkdwn",
-              "text": "*Ler Ros*\n:star::star::star::star: 2082 reviews\n I would really recommend the  Yum Koh Moo Yang - Spicy lime dressing and roasted quick marinated pork shoulder, basil leaves, chili & rice powder."
-            },
-            "accessory": {
-              "type": "image",
-              "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/DawwNigKJ2ckPeDeDM7jAg/o.jpg",
-              "alt_text": "alt text for image"
-            }
-          },
-          {
-            "type": "divider"
-          },
-          {
-            "type": "actions",
-            "elements": [
-              {
-                "type": "button",
-                "text": {
-                  "type": "plain_text",
-                  "text": "Farmhouse",
-                  "emoji": true
-                },
-                "value": "click_me_123"
-              },
-              {
-                "type": "button",
-                "text": {
-                  "type": "plain_text",
-                  "text": "Kin Khao",
-                  "emoji": true
-                },
-                "value": "click_me_123",
-                "url": "https://google.com"
-              },
-              {
-                "type": "button",
-                "text": {
-                  "type": "plain_text",
-                  "text": "Ler Ros",
-                  "emoji": true
-                },
-                "value": "click_me_123",
-                "url": "https://google.com"
-              }
-            ]
-          }
-        ]
-      }
       
-      // const viewPayload = {
-      //   type: 'modal',
-      //   callback_id:"id_1",
-      //   title: {
-      //     type: 'plain_text',
-      //     text: 'My App',
-      //     emoji: true,
-      //   },
-      //   submit: {
-      //     type: 'plain_text',
-      //     text: 'Submit',
-      //     emoji: true,
-      //   },
-      //   close: {
-      //     type: 'plain_text',
-      //     text: 'Cancel',
-      //     emoji: true,
-      //   },
-      //   blocks: [
-      //     {
-      //       type: 'section',
-      //       text: {
-      //         type: 'mrkdwn',
-      //         text: 'Pick an item from the dropdown list',
-      //       },
-      //       accessory: {
-      //         type: 'static_select',
-      //         placeholder: {
-      //           type: 'plain_text',
-      //           text: 'Select an item',
-      //           emoji: true,
-      //         },
-      //         option_groups: [
-      //           {
-      //             label: {
-      //               type: 'plain_text',
-      //               text: 'Options Group 1',
-      //               emoji: true,
-      //             },
-      //             options: [
-      //               {
-      //                 text: {
-      //                   type: 'plain_text',
-      //                   text: 'Loading...',
-      //                   emoji: true,
-      //                 },
-      //                 value: 'loading_option',
-      //               },
-      //             ],
-      //           },
-      //         ],
-      //         action_id: 'static_select-action',
-      //       },
-      //     },
-      //     {
-      //       type: 'section',
-      //       block_id: 'external_section',
-      //       text: {
-      //         type: 'mrkdwn',
-      //         text: 'External Data Source',
-      //       },
-      //       accessory: {
-      //         action_id: 'external_select-action',
-      //         type: 'external_select',
-      //         placeholder: {
-      //           type: 'plain_text',
-      //           text: 'Select an item',
-      //         },
-      //         min_query_length: 0,
-      //       },
-      //     },
-      //     {
-      //       type: 'section',
-      //       block_id: 'external_section_1',
-      //       text: {
-      //         type: 'mrkdwn',
-      //         text: 'External Data Source',
-      //       },
-      //       accessory: {
-      //         action_id: 'external_select-action-1',
-      //         type: 'external_select',
-      //         placeholder: {
-      //           type: 'plain_text',
-      //           text: 'Select an item',
-      //         },
-      //         min_query_length: 0,
-      //       },
-      //     },
-      //     {
-      //       type: 'section',
-      //       block_id: 'overflow_section',
-      //       text: {
-      //         type: 'mrkdwn',
-      //         text: 'This is a section block with an overflow menu.',
-      //       },
-      //       accessory: {
-      //         type: 'overflow',
-      //         options: [
-      //           {
-      //             text: {
-      //               type: 'plain_text',
-      //               text: 'Option 1',
-      //               emoji: true,
-      //             },
-      //             value: 'option-1',
-      //           },
-      //           {
-      //             text: {
-      //               type: 'plain_text',
-      //               text: 'Option 2',
-      //               emoji: true,
-      //             },
-      //             value: 'option-2',
-      //           },
-      //           {
-      //             text: {
-      //               type: 'plain_text',
-      //               text: 'Option 3',
-      //               emoji: true,
-      //             },
-      //             value: 'option-3',
-      //           },
-      //         ],
-      //         action_id: 'overflow-action',
-      //       },
-      //     },
-      //   ],
-      // };
+      const viewPayload = {
+        type: 'modal',
+        callback_id:"id_1",
+        title: {
+          type: 'plain_text',
+          text: 'My App',
+          emoji: true,
+        },
+        submit: {
+          type: 'plain_text',
+          text: 'Submit',
+          emoji: true,
+        },
+        close: {
+          type: 'plain_text',
+          text: 'Cancel',
+          emoji: true,
+        },
+        blocks: [
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: 'Pick an item from the dropdown list',
+            },
+            accessory: {
+              type: 'static_select',
+              placeholder: {
+                type: 'plain_text',
+                text: 'Select an item',
+                emoji: true,
+              },
+              option_groups: [
+                {
+                  label: {
+                    type: 'plain_text',
+                    text: 'Options Group 1',
+                    emoji: true,
+                  },
+                  options: [
+                    {
+                      text: {
+                        type: 'plain_text',
+                        text: 'Loading...',
+                        emoji: true,
+                      },
+                      value: 'loading_option',
+                    },
+                  ],
+                },
+              ],
+              action_id: 'static_select-action',
+            },
+          },
+          {
+            type: 'section',
+            block_id: 'external_section',
+            text: {
+              type: 'mrkdwn',
+              text: 'External Data Source',
+            },
+            accessory: {
+              action_id: 'external_select-action',
+              type: 'external_select',
+              placeholder: {
+                type: 'plain_text',
+                text: 'Select an item',
+              },
+              min_query_length: 0,
+            },
+          },
+          {
+            type: 'section',
+            block_id: 'external_section_1',
+            text: {
+              type: 'mrkdwn',
+              text: 'External Data Source',
+            },
+            accessory: {
+              action_id: 'external_select-action-1',
+              type: 'external_select',
+              placeholder: {
+                type: 'plain_text',
+                text: 'Select an item',
+              },
+              min_query_length: 0,
+            },
+          },
+          {
+            type: 'section',
+            block_id: 'overflow_section',
+            text: {
+              type: 'mrkdwn',
+              text: 'This is a section block with an overflow menu.',
+            },
+            accessory: {
+              type: 'overflow',
+              options: [
+                {
+                  text: {
+                    type: 'plain_text',
+                    text: 'Option 1',
+                    emoji: true,
+                  },
+                  value: 'option-1',
+                },
+                {
+                  text: {
+                    type: 'plain_text',
+                    text: 'Option 2',
+                    emoji: true,
+                  },
+                  value: 'option-2',
+                },
+                {
+                  text: {
+                    type: 'plain_text',
+                    text: 'Option 3',
+                    emoji: true,
+                  },
+                  value: 'option-3',
+                },
+              ],
+              action_id: 'overflow-action',
+            },
+          },
+        ],
+      };
 
       Logger.log(`====\n ${users[0]?.token}`);
 
@@ -314,7 +211,6 @@ export class SlackController {
             Authorization: `Bearer ${users[0]?.token}`,
             'Content-Type': 'application/json',
           },
-          timeout: 5000
         }
       );
   
