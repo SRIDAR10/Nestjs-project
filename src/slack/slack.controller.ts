@@ -3,10 +3,12 @@ import { Response } from 'express';
 import axios from 'axios';
 import { SlackService } from './slack.service';
 
+
 @Controller('slack')
 export class SlackController {
   private slackApiToken: string;
   constructor(private slackService: SlackService) {}
+   users = this.slackService.getAllUsers();
 
   private readonly slackApiUrl = 'https://slack.com/api';
 
@@ -60,7 +62,6 @@ export class SlackController {
 
   private async sendInitialModalView(triggerId: any): Promise<void> {
     try {
-      const users = await this.slackService.getAllUsers();
       const viewPayload={
         "type": "modal",
         "title": {
@@ -294,7 +295,7 @@ export class SlackController {
       //   ],
       // };
 
-      Logger.log(`=== ${users[0]?.token}`);
+      Logger.log(`=== ${this.users[0]?.token}`);
 
       const response = await axios.post(
         `${this.slackApiUrl}/views.open`,
@@ -304,7 +305,7 @@ export class SlackController {
         },
         {
           headers: {
-            Authorization: `Bearer ${users[0]?.token}`,
+            Authorization: `Bearer ${this.users[0]?.token}`,
             'Content-Type': 'application/json',
           },
           timeout: 5000
