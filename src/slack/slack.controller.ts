@@ -8,7 +8,7 @@ import { SlackService } from './slack.service';
 export class SlackController {
   private slackApiToken: string;
   constructor(private slackService: SlackService) {}
-   users = this.slackService.getAllUsers();
+
 
   private readonly slackApiUrl = 'https://slack.com/api';
 
@@ -60,7 +60,8 @@ export class SlackController {
     }
   }  
 
-  private async sendInitialModalView(triggerId: any): Promise<void> {
+  private sendInitialModalView(triggerId: any) {
+   const users = this.slackService.getAllUsers();
     try {
       const viewPayload={
         "type": "modal",
@@ -295,9 +296,9 @@ export class SlackController {
       //   ],
       // };
 
-      Logger.log(`=== ${this.users[0]?.token}`);
+      Logger.log(`=== ${users[0]?.token}`);
 
-      const response = await axios.post(
+      const response = axios.post(
         `${this.slackApiUrl}/views.open`,
         {
           trigger_id : triggerId,
@@ -305,18 +306,18 @@ export class SlackController {
         },
         {
           headers: {
-            Authorization: `Bearer ${this.users[0]?.token}`,
+            Authorization: `Bearer ${users[0]?.token}`,
             'Content-Type': 'application/json',
           },
           timeout: 5000
         }
       );
   
-      if (response.status === 200) {
-        Logger.log('Modal opened successfully:', response.data);
-      } else {
-        Logger.error('Error opening modal. Status:', response.status);
-      }
+      // if (response.status === 200) {
+      //   Logger.log('Modal opened successfully:', response.data);
+      // } else {
+      //   Logger.error('Error opening modal. Status:', response.status);
+      // }
 
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error === 'expired_trigger_id') {
