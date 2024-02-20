@@ -66,7 +66,7 @@ export class SlackController {
   }
 
   private async sendInitialModalView(triggerId: any) {
-   const users = this.slackService.getAllUsers();
+   const users = await this.slackService.getAllUsers();
     try {
       const viewPayload={
         "type": "modal",
