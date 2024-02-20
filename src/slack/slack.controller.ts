@@ -52,12 +52,13 @@ export class SlackController {
   ): Promise<any> {
     try {
       Logger.log(`slash command payload content: ${JSON.stringify(payload)} token => ${payload?.token}`);
+      await this.sendInitialModalView(payload?.trigger_id);
       
       // Send immediate response to acknowledge the command
       res.status(200).send('Processing...');
   
       // Open the modal without delay
-      await this.sendInitialModalView(payload?.trigger_id);
+      // await this.sendInitialModalView(payload?.trigger_id);
       return "OK";
     } catch (error) {
       Logger.error('Error handling interaction:', error);
