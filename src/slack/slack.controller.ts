@@ -82,6 +82,7 @@ export class SlackController {
       };
       
       const modalInfo = {
+        "view_id": interactionPayload.view.id,
               "token": users[0].token,
               "trigger_id": interactionPayload.trigger_id,
               "view": modal
