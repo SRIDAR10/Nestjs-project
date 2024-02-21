@@ -64,7 +64,7 @@ export class SlackController {
       const modalPayload = {
         trigger_id: payload.trigger_id,
         view: {
-          "type": "modal",
+          type: "modal",
           title: 'Create Opportunity',
           blocks: [
             {
