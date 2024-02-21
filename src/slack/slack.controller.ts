@@ -1,4 +1,4 @@
-import { Controller, Post, Req, Res, Logger, Body } from '@nestjs/common';
+import { Controller, Post, Req, Res, Logger, Body ,HttpStatus} from '@nestjs/common';
 import { Response } from 'express';
 import axios from 'axios';
 import { SlackService } from './slack.service';
@@ -50,29 +50,8 @@ export class SlackController {
     @Body() payload: any,
     @Res() res: Response,
   ): Promise<any> {
-
-    const modalPayload = {
-      trigger_id: payload.trigger_id,
-      title: 'My Modal Title',
-      blocks: [],
-    };
-    const users = await this.slackService.getAllUsers();
-
-    const url = 'https://api.slack.com/api/views.open';
-    const response = await axios.post(url, modalPayload, {
-      headers: {
-        Authorization: `Bearer ${users[0]?.token}`,
-      },
-    });
-    Logger.error(response);
-
-
-
-
-
-
-
-    // try {
+    res.status(HttpStatus.OK).send('Processing...');
+  // try {
     //   Logger.log(`slash command payload content: ${JSON.stringify(payload)} token => ${payload?.token}`);
       
     //   // Send immediate response to acknowledge the command
@@ -84,6 +63,41 @@ export class SlackController {
     //   Logger.error('Error handling interaction:', error);
     //   res.status(500).send('Internal Server Error');
     // }
+    const userId = payload.user_id;
+    if (!userId) {
+      throw new Error('Missing user ID in payload');
+    }
+
+    const users = await this.slackService.getAllUsers();
+
+    // Prepare minimal modal payload (avoid complex operations here)
+    const modalPayload = {
+      trigger_id: payload.trigger_id,
+      title: 'Create Opportunity',
+      blocks: [
+        {
+          type: 'section',
+          text: {
+            type: 'plain_text',
+            text: 'Creating opportunity...',
+          },
+        },
+      ],
+    };
+
+    const response = await axios.post(
+      `${this.slackApiUrl}/views.open`,
+      {
+        trigger_id : payload.trigger_id,
+        view: modalPayload,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${users[0]?.token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
   }
 
   private async sendInitialModalView(triggerId: any) {
