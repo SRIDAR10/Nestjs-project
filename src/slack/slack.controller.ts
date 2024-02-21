@@ -56,43 +56,157 @@ export class SlackController {
       if (!userId) {
         throw new Error('Missing user ID in payload');
       }
-  
-      const users = await this.slackService.getAllUsers();
-      Logger.log(payload.trigger_id);
-      Logger.log(payload.user_id);
-  
-      const modalPayload = {
-        trigger_id: payload.trigger_id,
-        view: {
-          type: 'modal',
-          title: {
-            type: 'plain_text',
-            text: 'Test Modal',
-          },
-          blocks: [
-            {
-              type: 'section',
-              text: {
-                type: 'mrkdwn',
-                text: 'This is a test modal.',
-              },
-            },
-          ],
+  const modal = {
+    "title": {
+      "type": "plain_text",
+      "text": "My App",
+      "emoji": true
+    },
+    "submit": {
+      "type": "plain_text",
+      "text": "Submit",
+      "emoji": true
+    },
+    "type": "modal",
+    "close": {
+      "type": "plain_text",
+      "text": "Cancel",
+      "emoji": true
+    },
+    "blocks": [
+      {
+        "type": "input",
+        "element": {
+          "type": "plain_text_input",
+          "action_id": "title",
+          "placeholder": {
+            "type": "plain_text",
+            "text": "What do you want to ask of the world?"
+          }
         },
-      };
-  
-      const response = await axios.post(
-        `${this.slackApiUrl}/views.open`,
-        modalPayload,
-        {
-          headers: {
-            Authorization: `Bearer ${users[0]?.token}`,
-            'Content-Type': 'application/json',
-          },
+        "label": {
+          "type": "plain_text",
+          "text": "Title"
         }
-      );
+      },
+      {
+        "type": "input",
+        "element": {
+          "type": "multi_channels_select",
+          "action_id": "channels",
+          "placeholder": {
+            "type": "plain_text",
+            "text": "Where should the poll be sent?"
+          }
+        },
+        "label": {
+          "type": "plain_text",
+          "text": "Channel(s)"
+        }
+      },
+      {
+        "type": "input",
+        "element": {
+          "type": "plain_text_input",
+          "action_id": "option_1",
+          "placeholder": {
+            "type": "plain_text",
+            "text": "First option"
+          }
+        },
+        "label": {
+          "type": "plain_text",
+          "text": "Option 1"
+        }
+      },
+      {
+        "type": "input",
+        "element": {
+          "type": "plain_text_input",
+          "action_id": "option_2",
+          "placeholder": {
+            "type": "plain_text",
+            "text": "How many options do they need, really?"
+          }
+        },
+        "label": {
+          "type": "plain_text",
+          "text": "Option 2"
+        }
+      },
+      {
+        "type": "actions",
+        "elements": [
+          {
+            "type": "button",
+            "action_id": "add_option",
+            "text": {
+              "type": "plain_text",
+              "text": "Add another option  "
+            }
+          }
+        ]
+      }
+    ]
+  }
+      const users = await this.slackService.getAllUsers();
+      const headers = {
+        headers: {
+          "Content-type": "application/json; charset=utf-8",
+          "Authorization": "Bearer " + users[0].token
+        }
+      };
+      
+      const modalInfo = {
+              "token": users[0].token,
+              "trigger_id": payload.trigger_id,
+              "view": modal
+            };
+      
+            axios
+              .post("https://slack.com/api/views.open", modalInfo, headers)
+              .then(response => {
+                const data = response.data;
+                if (!data.ok) {
+                  return data.error;
+                }
+              })
+              .catch(error => {
+                console.log("-Error: ", error);
+              });
+      // Logger.log(payload.trigger_id);
+      // Logger.log(payload.user_id);
   
-      Logger.log(`Slack API Response:'\n, ${response.data}`);
+      // const modalPayload = {
+      //   trigger_id: payload.trigger_id,
+      //   view: {
+      //     type: 'modal',
+      //     title: {
+      //       type: 'plain_text',
+      //       text: 'Test Modal',
+      //     },
+      //     blocks: [
+      //       {
+      //         type: 'section',
+      //         text: {
+      //           type: 'mrkdwn',
+      //           text: 'This is a test modal.',
+      //         },
+      //       },
+      //     ],
+      //   },
+      // };
+  
+      // const response = await axios.post(
+      //   `${this.slackApiUrl}/views.open`,
+      //   modalPayload,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${users[0]?.token}`,
+      //       'Content-Type': 'application/json',
+      //     },
+      //   }
+      // );
     } catch (error) {
       console.error('Error handling slash command:', error);
       res.status(500).send('Internal Server Error');
