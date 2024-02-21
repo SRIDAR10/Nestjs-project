@@ -59,6 +59,8 @@ export class SlackController {
       }
   
       const users = await this.slackService.getAllUsers();
+      Logger.log(payload.trigger_id);
+      Logger.log(payload.user_id);
   
       // Prepare minimal modal payload
       const modalPayload = {
