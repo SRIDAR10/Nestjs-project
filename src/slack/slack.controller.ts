@@ -67,7 +67,6 @@ export class SlackController {
         trigger_id: payload.trigger_id,
         view: {
           type: "modal",
-          title: 'Create Opportunity',
           blocks: [
             {
               type: 'section',
