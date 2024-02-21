@@ -76,7 +76,7 @@ export class SlackController {
               "text": ":clipboard: *List of events*\nChoose from different event lists"
             },
             "accessory": {
-              "type": "static_select_1",
+              "type": "static_select",
               "placeholder": {
                 "type": "plain_text",
                 "text": "Choose list",
@@ -117,7 +117,7 @@ export class SlackController {
               "text": ":gear: *Settings*\nManage your notifications and team settings"
             },
             "accessory": {
-              "type": "static_select_2",
+              "type": "static_select",
               "placeholder": {
                 "type": "plain_text",
                 "text": "Edit settings",
@@ -284,7 +284,7 @@ export class SlackController {
           "text": ":clipboard: *List of events*\nChoose from different event lists"
         },
         "accessory": {
-          "type": "static_select_1",
+          "type": "static_select",
           "placeholder": {
             "type": "plain_text",
             "text": "Choose list",
@@ -325,7 +325,7 @@ export class SlackController {
           "text": ":gear: *Settings*\nManage your notifications and team settings"
         },
         "accessory": {
-          "type": "static_select_2",
+          "type": "static_select",
           "placeholder": {
             "type": "plain_text",
             "text": "Edit settings",
