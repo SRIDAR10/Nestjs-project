@@ -50,56 +50,51 @@ export class SlackController {
     @Body() payload: any,
     @Res() res: Response,
   ): Promise<any> {
-    res.status(HttpStatus.OK).send('Processing...');
-  // try {
-    //   Logger.log(`slash command payload content: ${JSON.stringify(payload)} token => ${payload?.token}`);
-      
-    //   // Send immediate response to acknowledge the command
+    try {
+      res.status(HttpStatus.OK).send('Processing...');
   
-    //   // Open the modal without delay
-    //   await this.sendInitialModalView(payload?.trigger_id);
-    //   res.status(200).send('Processing...');
-    // } catch (error) {
-    //   Logger.error('Error handling interaction:', error);
-    //   res.status(500).send('Internal Server Error');
-    // }
-    const userId = payload.user_id;
-    if (!userId) {
-      throw new Error('Missing user ID in payload');
-    }
-
-    const users = await this.slackService.getAllUsers();
-
-    // Prepare minimal modal payload (avoid complex operations here)
-    const modalPayload = {
-      trigger_id: payload.trigger_id,
-      title: 'Create Opportunity',
-      blocks: [
-        {
-          type: 'section',
-          text: {
-            type: 'plain_text',
-            text: 'Creating opportunity...',
-          },
-        },
-      ],
-    };
-
-    const response = await axios.post(
-      `${this.slackApiUrl}/views.open`,
-      {
-        trigger_id : payload.trigger_id,
-        view: modalPayload,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${users[0]?.token}`,
-          'Content-Type': 'application/json',
-        },
+      const userId = payload.user_id;
+      if (!userId) {
+        throw new Error('Missing user ID in payload');
       }
-    );
+  
+      const users = await this.slackService.getAllUsers();
+  
+      // Prepare minimal modal payload
+      const modalPayload = {
+        trigger_id: payload.trigger_id,
+        view: {
+          title: 'Create Opportunity',
+          blocks: [
+            {
+              type: 'section',
+              text: {
+                type: 'plain_text',
+                text: 'Creating opportunity...',
+              },
+            },
+          ],
+        },
+      };
+  
+      const response = await axios.post(
+        `${this.slackApiUrl}/views.open`,
+        modalPayload,
+        {
+          headers: {
+            Authorization: `Bearer ${users[0]?.token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      console.log('Slack API Response:', response.data);
+    } catch (error) {
+      console.error('Error handling slash command:', error);
+      res.status(500).send('Internal Server Error');
+    }
   }
-
+  
   private async sendInitialModalView(triggerId: any) {
     try {
       const users = await this.slackService.getAllUsers();
