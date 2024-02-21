@@ -20,24 +20,102 @@ export class SlackController {
     try {
       const interactionPayload = JSON.parse(payload);
       Logger.log(payload, interactionPayload, interactionPayload.type);
-
       if (interactionPayload.type === 'block_actions') {
-        try{
-        const channelId = interactionPayload.channel.id;
-        const responseUrl = interactionPayload.response_url;
-        const triggerId = interactionPayload.trigger_id;
-        Logger.log(`triggerId ${triggerId}`);
-        Logger.log(`Interaction in channel ${channelId}`);
-        await this.sendInitialModalView(triggerId);
-        res.status(200).json({ response_action: 'clear' });
-        } catch(e){
-          Logger.log(e);
-        }
-      } else if (interactionPayload.type === 'view_submission') {
-        const submittedValues = interactionPayload.view.state.values;
-        Logger.log(`Submitted values ${submittedValues}`);
-        res.status(200).json({ response_action: 'clear' });
+        Logger.log(interactionPayload);
       }
+      const modal = {
+        "title": {
+          "type": "plain_text",
+          "text": "My App xansmd cajhs cjhaw csjh ec ha schja shj ejh cjhe chj esvj j vce ",
+          "emoji": true
+        },
+        "submit": {
+          "type": "plain_text",
+          "text": "Submit",
+          "emoji": true
+        },
+        "type": "modal",
+        "close": {
+          "type": "plain_text",
+          "text": "Cancel",
+          "emoji": true
+        },
+        "blocks": [
+          {
+            "type": "input",
+            "element": {
+              "type": "plain_text_input",
+              "action_id": "option_1",
+              "placeholder": {
+                "type": "plain_text",
+                "text": "First option"
+              }
+            },
+            "label": {
+              "type": "plain_text",
+              "text": "Option 1"
+            }
+          },
+          {
+            "type": "input",
+            "element": {
+              "type": "plain_text_input",
+              "action_id": "title",
+              "placeholder": {
+                "type": "plain_text",
+                "text": "What do you want to ask of the world?"
+              }
+            },
+            "label": {
+              "type": "plain_text",
+              "text": "Title"
+            }
+          }
+        ]
+      }
+      const users = await this.slackService.getAllUsers();
+      const headers = {
+        headers: {
+          "Content-type": "application/json; charset=utf-8",
+          "Authorization": "Bearer " + users[0].token
+        }
+      };
+      
+      const modalInfo = {
+              "token": users[0].token,
+              "trigger_id": interactionPayload.trigger_id,
+              "view": modal
+            };
+      
+            axios
+              .post("https://slack.com/api/views.update", modalInfo, headers)
+              .then(response => {
+                const data = response.data;
+                if (!data.ok) {
+                  return data.error;
+                }
+              })
+              .catch(error => {
+                console.log("-Error: ", error);
+              });
+
+      // if (interactionPayload.type === 'block_actions') {
+      //   try{
+      //   const channelId = interactionPayload.channel.id;
+      //   const responseUrl = interactionPayload.response_url;
+      //   const triggerId = interactionPayload.trigger_id;
+      //   Logger.log(`triggerId ${triggerId}`);
+      //   Logger.log(`Interaction in channel ${channelId}`);
+      //   await this.sendInitialModalView(triggerId);
+      //   res.status(200).json({ response_action: 'clear' });
+      //   } catch(e){
+      //     Logger.log(e);
+      //   }
+      // } else if (interactionPayload.type === 'view_submission') {
+      //   const submittedValues = interactionPayload.view.state.values;
+      //   Logger.log(`Submitted values ${submittedValues}`);
+      //   res.status(200).json({ response_action: 'clear' });
+      // }
       res.status(200).json({ response_action: 'clear' });
     } catch (error) {
       Logger.error('Error handling interaction:', error);
