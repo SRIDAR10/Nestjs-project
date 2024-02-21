@@ -62,17 +62,20 @@ export class SlackController {
       Logger.log(payload.trigger_id);
       Logger.log(payload.user_id);
   
-      // Prepare minimal modal payload
       const modalPayload = {
         trigger_id: payload.trigger_id,
         view: {
-          type: "modal",
+          type: 'modal',
+          title: {
+            type: 'plain_text',
+            text: 'Test Modal',
+          },
           blocks: [
             {
               type: 'section',
               text: {
-                type: 'plain_text',
-                text: 'Creating opportunity...',
+                type: 'mrkdwn',
+                text: 'This is a test modal.',
               },
             },
           ],
