@@ -78,36 +78,6 @@ export class SlackController {
         "type": "input",
         "element": {
           "type": "plain_text_input",
-          "action_id": "title",
-          "placeholder": {
-            "type": "plain_text",
-            "text": "What do you want to ask of the world?"
-          }
-        },
-        "label": {
-          "type": "plain_text",
-          "text": "Title"
-        }
-      },
-      {
-        "type": "input",
-        "element": {
-          "type": "multi_channels_select",
-          "action_id": "channels",
-          "placeholder": {
-            "type": "plain_text",
-            "text": "Where should the poll be sent?"
-          }
-        },
-        "label": {
-          "type": "plain_text",
-          "text": "Channel(s)"
-        }
-      },
-      {
-        "type": "input",
-        "element": {
-          "type": "plain_text_input",
           "action_id": "option_1",
           "placeholder": {
             "type": "plain_text",
@@ -123,29 +93,16 @@ export class SlackController {
         "type": "input",
         "element": {
           "type": "plain_text_input",
-          "action_id": "option_2",
+          "action_id": "title",
           "placeholder": {
             "type": "plain_text",
-            "text": "How many options do they need, really?"
+            "text": "What do you want to ask of the world?"
           }
         },
         "label": {
           "type": "plain_text",
-          "text": "Option 2"
+          "text": "Title"
         }
-      },
-      {
-        "type": "actions",
-        "elements": [
-          {
-            "type": "button",
-            "action_id": "add_option",
-            "text": {
-              "type": "plain_text",
-              "text": "Add another option  "
-            }
-          }
-        ]
       }
     ]
   }
@@ -174,39 +131,6 @@ export class SlackController {
               .catch(error => {
                 console.log("-Error: ", error);
               });
-      // Logger.log(payload.trigger_id);
-      // Logger.log(payload.user_id);
-  
-      // const modalPayload = {
-      //   trigger_id: payload.trigger_id,
-      //   view: {
-      //     type: 'modal',
-      //     title: {
-      //       type: 'plain_text',
-      //       text: 'Test Modal',
-      //     },
-      //     blocks: [
-      //       {
-      //         type: 'section',
-      //         text: {
-      //           type: 'mrkdwn',
-      //           text: 'This is a test modal.',
-      //         },
-      //       },
-      //     ],
-      //   },
-      // };
-  
-      // const response = await axios.post(
-      //   `${this.slackApiUrl}/views.open`,
-      //   modalPayload,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${users[0]?.token}`,
-      //       'Content-Type': 'application/json',
-      //     },
-      //   }
-      // );
     } catch (error) {
       console.error('Error handling slash command:', error);
       res.status(500).send('Internal Server Error');
