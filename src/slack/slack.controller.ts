@@ -90,7 +90,7 @@ export class SlackController {
         }
       );
   
-      console.log('Slack API Response:', response.data);
+      Logger.log(`Slack API Response:'\n, ${response.data}`);
     } catch (error) {
       console.error('Error handling slash command:', error);
       res.status(500).send('Internal Server Error');
