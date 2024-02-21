@@ -169,7 +169,7 @@ export class SlackController {
         ]
       }
       Logger.log("Option Selected");
-      Logger.log(interactionPayload.action[0]?.type);
+      Logger.log(interactionPayload.actions[0]?.type);
       const users = await this.slackService.getAllUsers();
       const headers = {
         headers: {
