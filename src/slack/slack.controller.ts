@@ -51,7 +51,6 @@ export class SlackController {
     @Res() res: Response,
   ): Promise<any> {
     try {
-      res.status(HttpStatus.OK).send('Processing...');
   
       const userId = payload.user_id;
       if (!userId) {
@@ -98,6 +97,7 @@ export class SlackController {
       console.error('Error handling slash command:', error);
       res.status(500).send('Internal Server Error');
     }
+    res.status(HttpStatus.OK).send('Processing...');
   }
   
   private async sendInitialModalView(triggerId: any) {
