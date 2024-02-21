@@ -21,8 +21,9 @@ export class SlackController {
       const interactionPayload = JSON.parse(payload);
       Logger.log(payload, interactionPayload, interactionPayload.type);
       if (interactionPayload.type === 'block_actions') {
-        Logger.log(interactionPayload);
+        Logger.log("inside block action");
       }
+      Logger.log(interactionPayload.view.id);
       const modal = {
         "title": {
           "type": "plain_text",
