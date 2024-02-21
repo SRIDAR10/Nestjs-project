@@ -76,7 +76,7 @@ export class SlackController {
               "text": ":clipboard: *List of events*\nChoose from different event lists"
             },
             "accessory": {
-              "type": "static_select",
+              "type": "static_select_1",
               "placeholder": {
                 "type": "plain_text",
                 "text": "Choose list",
@@ -117,7 +117,7 @@ export class SlackController {
               "text": ":gear: *Settings*\nManage your notifications and team settings"
             },
             "accessory": {
-              "type": "static_select",
+              "type": "static_select_2",
               "placeholder": {
                 "type": "plain_text",
                 "text": "Edit settings",
@@ -168,6 +168,8 @@ export class SlackController {
           }
         ]
       }
+      Logger.log("Option Selected");
+      Logger.log(interactionPayload.action[0]?.type);
       const users = await this.slackService.getAllUsers();
       const headers = {
         headers: {
@@ -282,7 +284,7 @@ export class SlackController {
           "text": ":clipboard: *List of events*\nChoose from different event lists"
         },
         "accessory": {
-          "type": "static_select",
+          "type": "static_select_1",
           "placeholder": {
             "type": "plain_text",
             "text": "Choose list",
@@ -323,7 +325,7 @@ export class SlackController {
           "text": ":gear: *Settings*\nManage your notifications and team settings"
         },
         "accessory": {
-          "type": "static_select",
+          "type": "static_select_2",
           "placeholder": {
             "type": "plain_text",
             "text": "Edit settings",
