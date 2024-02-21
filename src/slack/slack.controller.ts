@@ -50,18 +50,40 @@ export class SlackController {
     @Body() payload: any,
     @Res() res: Response,
   ): Promise<any> {
-    try {
-      Logger.log(`slash command payload content: ${JSON.stringify(payload)} token => ${payload?.token}`);
+
+    const modalPayload = {
+      trigger_id: payload.trigger_id,
+      title: 'My Modal Title',
+      blocks: [],
+    };
+    const users = await this.slackService.getAllUsers();
+
+    const url = 'https://api.slack.com/api/views.open';
+    const response = await axios.post(url, modalPayload, {
+      headers: {
+        Authorization: `Bearer ${users[0]?.token}`,
+      },
+    });
+    Logger.error(response);
+
+
+
+
+
+
+
+    // try {
+    //   Logger.log(`slash command payload content: ${JSON.stringify(payload)} token => ${payload?.token}`);
       
-      // Send immediate response to acknowledge the command
+    //   // Send immediate response to acknowledge the command
   
-      // Open the modal without delay
-      await this.sendInitialModalView(payload?.trigger_id);
-      res.status(200).send('Processing...');
-    } catch (error) {
-      Logger.error('Error handling interaction:', error);
-      res.status(500).send('Internal Server Error');
-    }
+    //   // Open the modal without delay
+    //   await this.sendInitialModalView(payload?.trigger_id);
+    //   res.status(200).send('Processing...');
+    // } catch (error) {
+    //   Logger.error('Error handling interaction:', error);
+    //   res.status(500).send('Internal Server Error');
+    // }
   }
 
   private async sendInitialModalView(triggerId: any) {
